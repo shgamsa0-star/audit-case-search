@@ -2832,7 +2832,13 @@ function drawRecent(){
   box.querySelectorAll("button[data-v]").forEach(b=>{
     b.addEventListener("click",()=>{ state.q=b.dataset.v; $("#q").value=b.dataset.v; $("#qclear").hidden=false; render(); });
   });
-  $("#rdel").addEventListener("click",()=>{ state.recent=[]; drawRecent(); });
+  $("#rdel").addEventListener("click",()=>{
+    state.recent=[];
+    state.q=""; $("#q").value=""; $("#qclear").hidden=true;
+    state.page=1;
+    drawRecent();
+    render();
+  });
 }
 
 let t1,t2;
