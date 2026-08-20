@@ -1,0 +1,2969 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사례로 점검하는 감사예방 시스템 | 시흥시 감사사례 통합검색</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<!-- KRDS 공식 안내(개발자 › 폰트 사용)와 동일한 Pretendard GOV 웹폰트 CDN -->
+<link rel="stylesheet" as="style" crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-gov-dynamic-subset.min.css" />
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   KRDS 공식 디자인 토큰 (krds-uiux/resources/css/token/krds_tokens.css)
+   값은 공식 배포본에서 그대로 가져와 필요한 범위만 발췌했다.
+   ══════════════════════════════════════════════════════════════════════ */
+:root{
+  /* ── PRIMITIVE : gray ── */
+  --krds-color-light-gray-0:#ffffff;
+  --krds-color-light-gray-5:#f4f5f6;
+  --krds-color-light-gray-10:#e6e8ea;
+  --krds-color-light-gray-20:#cdd1d5;
+  --krds-color-light-gray-30:#b1b8be;
+  --krds-color-light-gray-40:#8a949e;
+  --krds-color-light-gray-50:#6d7882;
+  --krds-color-light-gray-60:#58616a;
+  --krds-color-light-gray-70:#464c53;
+  --krds-color-light-gray-80:#33363d;
+  --krds-color-light-gray-90:#1e2124;
+  --krds-color-light-gray-95:#131416;
+
+  /* ── PRIMITIVE : primary(파랑) ── */
+  --krds-color-light-primary-5:#ecf2fe;
+  --krds-color-light-primary-10:#d8e5fd;
+  --krds-color-light-primary-20:#b1cefb;
+  --krds-color-light-primary-50:#256ef4;
+  --krds-color-light-primary-60:#0b50d0;
+  --krds-color-light-primary-70:#083891;
+
+  /* ── PRIMITIVE : secondary(네이비) ── */
+  --krds-color-light-secondary-5:#eef2f7;
+  --krds-color-light-secondary-10:#d6e0eb;
+  --krds-color-light-secondary-50:#346fb2;
+  --krds-color-light-secondary-70:#063a74;
+  --krds-color-light-secondary-80:#052b57;
+
+  /* ── PRIMITIVE : 상태 ── */
+  --krds-color-light-warning-5:#fff3db;
+  --krds-color-light-warning-10:#ffe0a3;
+  --krds-color-light-warning-60:#8a5c00;
+  --krds-color-light-alpha-black75:#000000bf;
+
+  /* ── SEMANTIC : 배경·표면 ── */
+  --krds-light-color-background-white:var(--krds-color-light-gray-0);
+  --krds-light-color-background-gray-subtler:var(--krds-color-light-gray-5);
+  --krds-light-color-background-dim:var(--krds-color-light-alpha-black75);
+  --krds-light-color-surface-gray-subtler:var(--krds-color-light-gray-5);
+  --krds-light-color-surface-gray-subtle:var(--krds-color-light-gray-10);
+  --krds-light-color-surface-primary-subtler:var(--krds-color-light-primary-5);
+  --krds-light-color-surface-warning-subtler:var(--krds-color-light-warning-5);
+  --krds-light-color-surface-white:var(--krds-color-light-gray-0);
+
+  /* ── SEMANTIC : 텍스트 ── */
+  --krds-light-color-text-basic:var(--krds-color-light-gray-90);
+  --krds-light-color-text-bolder:var(--krds-color-light-gray-95);
+  --krds-light-color-text-subtle:var(--krds-color-light-gray-70);
+  --krds-light-color-text-primary:var(--krds-color-light-primary-60);
+  --krds-light-color-text-secondary:var(--krds-color-light-secondary-80);
+  --krds-light-color-text-warning:var(--krds-color-light-warning-60);
+  --krds-light-color-text-disabled:var(--krds-color-light-gray-40);
+  --krds-light-color-text-inverse:var(--krds-color-light-gray-0);   /* 자체 확장 */
+
+  /* ── SEMANTIC : 테두리·구분선 ── */
+  --krds-light-color-border-gray-light:var(--krds-color-light-gray-20);
+  --krds-light-color-border-gray:var(--krds-color-light-gray-30);
+  --krds-light-color-border-gray-dark:var(--krds-color-light-gray-60);
+  --krds-light-color-border-primary:var(--krds-color-light-primary-50);
+  --krds-light-color-border-secondary:var(--krds-color-light-secondary-70);
+  --krds-light-color-border-warning:var(--krds-color-light-warning-50);
+  --krds-light-color-border-warning-light:var(--krds-color-light-warning-10);
+  --krds-light-color-divider-gray-light:var(--krds-color-light-gray-20);
+
+  /* ── SEMANTIC : 액션 ── */
+  --krds-light-color-action-primary-hover:var(--krds-color-light-primary-5);
+  --krds-light-color-action-primary-pressed:var(--krds-color-light-primary-10);
+  --krds-light-color-action-secondary-hover:var(--krds-color-light-secondary-5);
+  --krds-light-color-action-disabled:var(--krds-color-light-gray-20);
+
+  /* ── NUMBER (1rem = 10px) ── */
+  --krds-number-2:0.2rem; --krds-number-3:0.4rem; --krds-number-4:0.6rem;
+  --krds-number-5:0.8rem; --krds-number-6:1rem;   --krds-number-7:1.2rem;
+  --krds-number-8:1.6rem; --krds-number-9:2rem;   --krds-number-10:2.4rem;
+  --krds-number-11:2.8rem;--krds-number-12:3.2rem;--krds-number-13:3.6rem;
+  --krds-number-14:4rem;  --krds-number-16:4.8rem;--krds-number-17:5.6rem;
+  --krds-number-18:6.4rem;
+
+  /* ── GAP · PADDING ── */
+  --krds-gap-1:var(--krds-number-2);  --krds-gap-2:var(--krds-number-3);
+  --krds-gap-3:var(--krds-number-5);  --krds-gap-4:var(--krds-number-7);
+  --krds-gap-5:var(--krds-number-8);  --krds-gap-6:var(--krds-number-9);
+  --krds-gap-7:var(--krds-number-10); --krds-gap-8:var(--krds-number-12);
+  --krds-gap-9:var(--krds-number-14); --krds-gap-10:var(--krds-number-16);
+  --krds-gap-11:var(--krds-number-18);
+
+  /* ── RADIUS ── */
+  --krds-radius-xsmall1:var(--krds-number-2);
+  --krds-radius-small1:var(--krds-number-3);
+  --krds-radius-medium1:var(--krds-number-4);
+  --krds-radius-medium3:var(--krds-number-5);
+  --krds-radius-large1:var(--krds-number-6);
+  --krds-radius-xlarge1:var(--krds-number-7);
+
+  /* ── SIZE ── */
+  --krds-size-height-4:var(--krds-number-10);   /* 24px 아이콘 */
+  --krds-size-height-6:var(--krds-number-14);   /* 40px */
+  --krds-size-height-8:var(--krds-number-17);   /* 56px */
+  --krds-icon--size-medium:var(--krds-number-9);   /* 20px */
+  --krds-icon--size-large:var(--krds-number-10);   /* 24px */
+  --krds-padding-2:var(--krds-number-3);
+  --krds-padding-3:var(--krds-number-5);
+  --krds-light-color-action-secondary:var(--krds-color-light-gray-0);
+  --krds-light-color-action-secondary-pressed:var(--krds-color-light-secondary-10);
+  --krds-light-color-action-secondary-active:var(--krds-color-light-secondary-70);
+  --krds-light-color-text-inverse-static:var(--krds-color-light-gray-0);
+  --krds-pc-gap-layout-h2-h3:var(--krds-number-14);
+
+  /* ── TYPOGRAPHY (PC) ── */
+  --krds-typo-font-type:Pretendard GOV;
+  --krds-pc-font-size-display-small:3.6rem;
+  --krds-pc-font-size-heading-xlarge:4rem;
+  --krds-pc-font-size-heading-large:3.2rem;
+  --krds-pc-font-size-heading-medium:2.4rem;
+  --krds-pc-font-size-heading-small:1.9rem;
+  --krds-pc-font-size-heading-xsmall:1.7rem;
+  --krds-pc-font-size-heading-xxsmall:1.5rem;
+  --krds-pc-font-size-body-large:1.9rem;
+  --krds-pc-font-size-body-medium:1.7rem;
+  --krds-pc-font-size-body-small:1.5rem;
+  --krds-pc-font-size-body-xsmall:1.3rem;
+  --krds-pc-font-size-label-medium:1.7rem;
+  --krds-pc-font-size-label-small:1.5rem;
+  --krds-pc-font-size-label-xsmall:1.3rem;
+  --krds-typo-letter-spacing-0:0rem;
+  --krds-typo-letter-spacing-1:0.1rem;
+
+  /* ── BASE (common.css) ── */
+  --krds-font-family-base:var(--krds-typo-font-type);
+  --krds-font-size-base:62.5%;
+  --krds-line-height-base:1.5;
+  --krds-line-height-loose:1.7;        /* 자체 확장(공식 미정의) */
+  --krds-font-weight-regular:400;
+  --krds-font-weight-bold:700;
+  --krds-contents-size:1200px;
+  --krds-contents-padding-x:24px;
+  --krds-font-underline-offset:0.3rem;
+  --krds-transition-base:0.4s ease-in-out;
+
+  /* 공식 포커스 링 : 흰 외곽선 + primary 4px 그림자(이중 링) */
+  --krds-box-shadow-outline:0 0 0 0.4rem var(--krds-light-color-border-primary);
+
+  /* 터치 영역 최소 44px */
+  --krds-touch-min:4.4rem;             /* 자체 확장 : 터치 최소 44px */
+
+  /* ── 시흥시 브랜드 (시흥시 누리집에서 추출) ── */
+  --sh-navy:#003780;              /* 로고 남색 · 흰 글자 대비 11.3:1 */
+  --sh-navy-active:#123a77;       /* 활성 카드 헤더 · 11.07:1 */
+  --sh-orange:#ee7500;            /* 로고 곡선 · 도형 전용(텍스트 사용 금지) */
+  --sh-head-gray:#f6f6f6;         /* 카드 머리 회색 */
+  --sh-grad-from:#3674b9;         /* 흰 글자 4.82:1 */
+  --sh-grad-to:#003780;           /* 흰 글자 11.3:1 */
+  --sh-gradient:linear-gradient(160deg, var(--sh-grad-from) 0%, var(--sh-grad-to) 100%);
+}
+
+/* ══ 선명한 화면 모드 (KRDS high-contrast) ══ */
+[data-krds-mode="high-contrast"]{
+  --krds-light-color-background-white:#000000;
+  --krds-light-color-background-gray-subtler:#131416;
+  --krds-light-color-background-dim:#000000bf;
+  --krds-light-color-surface-white:#000000;
+  --krds-light-color-surface-gray-subtler:#131416;
+  --krds-light-color-surface-gray-subtle:#33363d;
+  --krds-light-color-surface-primary-subtler:#020f27;
+  --krds-light-color-surface-warning-subtler:#241800;
+  --krds-light-color-text-basic:#f4f5f6;
+  --krds-light-color-text-bolder:#ffffff;
+  --krds-light-color-text-subtle:#cdd1d5;
+  --krds-light-color-text-primary:#b1cefb;
+  --krds-light-color-text-secondary:#abd8e3;
+  --krds-light-color-text-warning:#ffc95c;
+  --krds-light-color-text-disabled:#58616a;
+  --krds-light-color-text-inverse:#ffffff;
+  --krds-light-color-text-inverse-static:#ffffff;
+  --krds-light-color-border-gray-light:#33363d;
+  --krds-light-color-border-gray:#464c53;
+  --krds-light-color-border-gray-dark:#8a949e;
+  --krds-light-color-border-primary:#256ef4;
+  --krds-light-color-border-secondary:#1f687a;
+  --krds-light-color-border-warning-light:#2e1f00;
+  --krds-light-color-divider-gray-light:#33363d;
+  --krds-light-color-action-secondary:#00000000;
+  --krds-light-color-action-secondary-hover:#091f25;
+  --krds-light-color-action-secondary-active:#1f687a;
+  --krds-light-color-action-primary-hover:#020f27;
+  --krds-light-color-action-disabled:#33363d;
+  --krds-color-light-primary-10:#083891;
+  --krds-color-light-primary-20:#0b50d0;
+  --krds-color-light-primary-60:#4c87f6;
+  --krds-color-light-warning-10:#614100;
+  --krds-color-light-gray-50:#8a949e;
+  /* 선명한 화면 모드에서는 그라데이션·브랜드 배경을 단색으로 대체 */
+  --sh-gradient:none;
+  --sh-head-gray:#131416;
+  --sh-navy-active:#1f687a;
+  --sh-navy:#abd8e3;
+}
+
+/* ══ 글자 크기 조정 (KRDS zoom) ══ */
+html[data-krds-zoom="small"]{font-size:56.25%}   /* 0.9 */
+html[data-krds-zoom="medium"]{font-size:62.5%}   /* 1.0 기본 */
+html[data-krds-zoom="large"]{font-size:68.75%}   /* 1.1 */
+html[data-krds-zoom="xlarge"]{font-size:81.25%}  /* 1.3 */
+html[data-krds-zoom="xxlarge"]{font-size:93.75%} /* 1.5 */
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{
+  font-size:var(--krds-font-size-base);
+  scroll-behavior:smooth;
+  -webkit-tap-highlight-color:transparent;
+}
+body{
+  background-color:var(--krds-light-color-background-white);
+  color:var(--krds-light-color-text-basic);
+  font-family:var(--krds-font-family-base),'Pretendard GOV Variable','Pretendard',
+              'Noto Sans KR','Malgun Gothic',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-size:var(--krds-pc-font-size-body-medium);
+  font-weight:var(--krds-font-weight-regular);
+  line-height:var(--krds-line-height-base);
+  word-break:keep-all;word-wrap:break-word;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+input,select{font:inherit;color:inherit}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+svg{display:block;flex-shrink:0}
+
+/* KRDS 공식 포커스 표시 */
+:focus-visible{
+  outline:0.2rem solid var(--krds-light-color-border-inverse,#fff);
+  outline-offset:0;
+  box-shadow:var(--krds-box-shadow-outline);
+  border-radius:var(--krds-radius-small1);
+  transition:outline 0s, box-shadow 0s !important;
+}
+
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+.skip{
+  position:absolute;left:var(--krds-gap-5);top:-7rem;z-index:100;
+  background:var(--krds-light-color-border-secondary);color:var(--krds-light-color-text-inverse);
+  padding:var(--krds-gap-4) var(--krds-gap-6);
+  font-size:var(--krds-pc-font-size-label-small);font-weight:var(--krds-font-weight-bold);
+  border-radius:var(--krds-radius-medium1);line-height:var(--krds-line-height-base);
+}
+.skip:focus{top:var(--krds-gap-3)}
+
+.krds-shell{
+  max-width:var(--krds-contents-size);margin:0 auto;
+  padding:0 var(--krds-contents-padding-x);
+}
+
+/* ══════ 공식 배너 (KRDS 아이덴티티 : Masthead) ══════ */
+.krds-masthead{
+  background:var(--krds-light-color-surface-gray-subtler);
+  border-bottom:1px solid var(--krds-light-color-divider-gray-light);
+  font-size:var(--krds-pc-font-size-label-xsmall);
+  color:var(--krds-light-color-text-subtle);
+}
+.krds-masthead__in{
+  max-width:var(--krds-contents-size);margin:0 auto;
+  padding:var(--krds-gap-2) var(--krds-contents-padding-x);
+  display:flex;align-items:center;gap:var(--krds-gap-3);flex-wrap:wrap;
+  min-height:3.2rem;
+}
+.krds-masthead__gov{display:inline-flex;align-items:center;gap:0.6rem}
+.krds-masthead__tools{margin-left:auto;display:flex;gap:var(--krds-gap-2);align-items:center}
+.krds-masthead__tools button{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  min-height:3.2rem;padding:0 var(--krds-gap-3);
+  font-size:var(--krds-pc-font-size-label-xsmall);
+  color:var(--krds-light-color-text-subtle);
+  border-radius:var(--krds-radius-small1);
+}
+.krds-masthead__tools button:hover{
+  background:var(--krds-light-color-surface-gray-subtle);
+  color:var(--krds-light-color-text-basic);
+}
+
+/* ══════ 글자·화면 표시 설정 패널 ══════ */
+.a11y-panel{
+  background:var(--krds-light-color-surface-white);
+  border-bottom:1px solid var(--krds-light-color-divider-gray-light);
+}
+.a11y-panel[hidden]{display:none}
+.a11y-panel__in{
+  max-width:var(--krds-contents-size);margin:0 auto;
+  padding:var(--krds-gap-6) var(--krds-contents-padding-x);
+  display:flex;gap:var(--krds-gap-9);flex-wrap:wrap;align-items:flex-start;
+}
+.a11y-set{display:flex;flex-direction:column;gap:var(--krds-gap-3)}
+.a11y-set__t{
+  font-size:var(--krds-pc-font-size-label-small);font-weight:var(--krds-font-weight-bold);
+  color:var(--krds-light-color-text-secondary);
+}
+.a11y-set__opts{display:flex;gap:var(--krds-gap-2);flex-wrap:wrap}
+.a11y-set__opts button{
+  min-height:var(--krds-touch-min);padding:0 var(--krds-gap-5);
+  font-size:var(--krds-pc-font-size-body-small);
+  border:1px solid var(--krds-light-color-border-gray);
+  border-radius:var(--krds-radius-medium1);
+  background:var(--krds-light-color-surface-white);
+  color:var(--krds-light-color-text-subtle);
+}
+.a11y-set__opts button:hover{
+  border-color:var(--krds-light-color-border-primary);
+  background:var(--krds-light-color-action-primary-hover);
+}
+.a11y-set__opts button[aria-pressed="true"]{
+  background:var(--krds-light-color-action-secondary-active);
+  border-color:var(--krds-light-color-action-secondary-active);
+  color:var(--krds-light-color-text-inverse-static);
+  font-weight:var(--krds-font-weight-bold);
+}
+.a11y-panel__close{margin-left:auto;align-self:center}
+
+/* ══════ 공지 ══════ */
+.gnb-notice{
+  background:var(--sh-grad-to);
+  /* 얇은 가로 띠이므로 좌→우 방향으로 흐르게 한다 */
+  background-image:linear-gradient(100deg, var(--sh-grad-from) 0%, var(--sh-grad-to) 62%);
+  color:var(--krds-light-color-text-inverse);
+  position:relative;overflow:hidden;
+}
+/* 시흥시 누리집 곡선 물결 모티브 (장식) */
+.gnb-notice::before,
+.gnb-notice::after{
+  content:"";position:absolute;border-radius:50%;pointer-events:none;
+  border:1px solid rgba(255,255,255,.16);
+}
+.gnb-notice::before{right:-4rem;top:-9rem;width:22rem;height:22rem}
+.gnb-notice::after{right:6rem;top:-12rem;width:22rem;height:22rem;border-color:rgba(255,255,255,.11)}
+[data-krds-mode="high-contrast"] .gnb-notice{background-image:none}
+[data-krds-mode="high-contrast"] .gnb-notice::before,
+[data-krds-mode="high-contrast"] .gnb-notice::after{display:none}
+.gnb-notice__in{position:relative;z-index:1}
+/* 화면 아래에 항상 고정 노출 (닫기 없음) */
+.gnb-notice--fixed{
+  position:fixed;left:0;right:0;bottom:0;z-index:45;
+  box-shadow:0 -2px 12px rgba(3,43,91,.22);
+}
+/* 고정 띠에 콘텐츠가 가리지 않도록 여백 확보 */
+body{padding-bottom:5.2rem}
+@media (max-width:900px){
+  body{padding-bottom:8.4rem}
+  .gnb-notice--fixed .gnb-notice__in{padding-top:var(--krds-gap-3);padding-bottom:var(--krds-gap-3)}
+}
+.gnb-notice__in{
+  max-width:var(--krds-contents-size);margin:0 auto;
+  padding:var(--krds-gap-3) var(--krds-contents-padding-x);
+  display:flex;align-items:center;gap:var(--krds-gap-4);flex-wrap:wrap;
+  font-size:var(--krds-pc-font-size-body-small);line-height:var(--krds-line-height-base);
+}
+.gnb-notice__tag{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  font-size:var(--krds-pc-font-size-label-xsmall);font-weight:var(--krds-font-weight-bold);
+  padding:0.2rem var(--krds-gap-3);border:1px solid rgba(255,255,255,.7);
+  border-radius:var(--krds-radius-small1);flex-shrink:0;
+}
+.gnb-notice__links{margin-left:auto;display:flex;gap:var(--krds-gap-1)}
+.gnb-notice__links button{
+  min-height:3.6rem;padding:0 var(--krds-gap-4);
+  font-size:var(--krds-pc-font-size-body-small);color:var(--krds-light-color-text-inverse);
+  text-decoration:underline;text-underline-offset:var(--krds-font-underline-offset);
+  border-radius:var(--krds-radius-medium1);
+}
+.gnb-notice__links button:hover{background:rgba(255,255,255,.18)}
+
+/* ══════ 헤더 ══════ */
+.krds-header{
+  background:var(--krds-light-color-background-white);
+  border-bottom:1px solid var(--krds-light-color-divider-gray-light);
+}
+.krds-header__in{
+  max-width:var(--krds-contents-size);margin:0 auto;
+  padding:var(--krds-gap-5) var(--krds-contents-padding-x);
+  display:flex;align-items:center;gap:var(--krds-gap-5);flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:var(--krds-gap-4);min-width:0}
+.brand__logo{
+  display:flex;align-items:center;flex-shrink:0;
+  padding-right:var(--krds-gap-5);
+  border-right:1px solid var(--krds-light-color-divider-gray-light);
+  margin-right:var(--krds-gap-2);
+}
+.brand__logo img{height:3.4rem;width:auto;display:block}
+/* 선명한 화면 모드 : 어두운 배경에서도 로고가 묻히지 않도록 밝기 보정 */
+[data-krds-mode="high-contrast"] .brand__logo img{
+  filter:brightness(0) invert(1);
+}
+.brand__t{
+  font-size:var(--krds-pc-font-size-heading-xsmall);font-weight:var(--krds-font-weight-bold);
+  color:var(--krds-light-color-text-secondary);line-height:var(--krds-line-height-base);
+}
+.brand__s{
+  display:block;font-size:var(--krds-pc-font-size-label-xsmall);
+  font-weight:var(--krds-font-weight-regular);color:var(--krds-light-color-text-subtle);
+  line-height:var(--krds-line-height-base);
+}
+.krds-header__util{margin-left:auto;display:flex;gap:var(--krds-gap-1)}
+.krds-header__util button{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  min-height:var(--krds-touch-min);padding:0 var(--krds-gap-5);
+  font-size:var(--krds-pc-font-size-body-small);color:var(--krds-light-color-text-subtle);
+  border-radius:var(--krds-radius-medium1);
+}
+.krds-header__util button:hover{
+  background:var(--krds-light-color-action-primary-hover);color:var(--krds-light-color-text-primary);
+}
+
+/* ══════ 검색 ══════ */
+.searchsec{
+  background:var(--krds-light-color-background-gray-subtler);
+  border-bottom:1px solid var(--krds-light-color-divider-gray-light);
+  padding:var(--krds-gap-10) 0 var(--krds-gap-9);
+}
+/* KRDS heading-xlarge : PC 40px / 모바일 28px, 두께 700, 줄간격 150%, 자간 1px */
+.searchsec__title{
+  font-size:var(--krds-pc-font-size-heading-xlarge);
+  font-weight:var(--krds-font-weight-bold);
+  color:var(--sh-navy);
+  line-height:var(--krds-line-height-base);
+  letter-spacing:var(--krds-typo-letter-spacing-1);
+  margin-bottom:var(--krds-gap-4);
+}
+.searchsec__desc{
+  font-size:var(--krds-pc-font-size-body-medium);color:var(--krds-light-color-text-subtle);
+  line-height:var(--krds-line-height-loose);margin-bottom:var(--krds-gap-6);max-width:62ch;
+}
+.searchbox{max-width:78rem}
+.searchbox__label{
+  display:block;font-size:var(--krds-pc-font-size-label-small);
+  font-weight:var(--krds-font-weight-bold);color:var(--sh-navy);
+  margin-bottom:var(--krds-gap-3);line-height:var(--krds-line-height-base);
+}
+.searchbox__field{
+  display:flex;align-items:stretch;background:var(--krds-light-color-surface-white);
+  border:0.2rem solid var(--sh-navy);
+  border-radius:var(--krds-radius-medium3);
+}
+/* 초점 시 테두리 한 겹만 두껍게 (이중 링 방지) */
+.searchbox__field:focus-within{
+  border-color:var(--krds-light-color-border-primary);
+  box-shadow:none;
+  outline:0.1rem solid var(--krds-light-color-border-primary);
+  outline-offset:-0.3rem;
+}
+.searchbox__field input:focus-visible{outline:none;box-shadow:none}
+.searchbox__clear:focus-visible{outline:0.2rem solid var(--krds-light-color-border-primary);outline-offset:-0.2rem;box-shadow:none}
+.searchbox__icon{
+  display:flex;align-items:center;
+  padding:0 var(--krds-gap-3) 0 var(--krds-gap-5);
+  color:var(--sh-navy);
+}
+.searchbox__field input{
+  flex:1;min-width:0;border:none;outline:none;background:none;
+  padding:var(--krds-gap-5) var(--krds-gap-3);
+  font-size:var(--krds-pc-font-size-heading-xsmall);
+  line-height:var(--krds-line-height-base);min-height:var(--krds-touch-min);
+}
+.searchbox__field input::placeholder{color:var(--krds-color-light-gray-50)}
+.searchbox__clear{
+  width:var(--krds-touch-min);min-height:var(--krds-touch-min);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--krds-light-color-text-subtle);
+  border-radius:var(--krds-radius-medium1);margin:0.4rem;
+}
+.searchbox__clear:hover{background:var(--krds-light-color-surface-gray-subtle);color:var(--krds-light-color-text-basic)}
+
+.searchsec__meta{
+  margin-top:var(--krds-gap-5);display:flex;align-items:center;gap:var(--krds-gap-5);
+  flex-wrap:wrap;font-size:var(--krds-pc-font-size-body-small);
+  color:var(--krds-light-color-text-subtle);line-height:var(--krds-line-height-base);
+}
+.searchsec__meta strong{color:var(--krds-light-color-text-basic);font-weight:var(--krds-font-weight-bold)}
+.recent{display:flex;align-items:center;gap:var(--krds-gap-3);flex-wrap:wrap}
+.recent__lb{
+  font-size:var(--krds-pc-font-size-label-xsmall);
+  color:var(--krds-light-color-text-subtle);font-weight:var(--krds-font-weight-bold);
+}
+.recent button{
+  min-height:3.6rem;padding:0 var(--krds-gap-4);
+  font-size:var(--krds-pc-font-size-body-small);
+  border:1px solid var(--krds-light-color-border-gray);
+  background:var(--krds-light-color-surface-white);color:var(--krds-light-color-text-subtle);
+  border-radius:var(--krds-radius-medium1);line-height:var(--krds-line-height-base);
+}
+.recent button:hover{
+  border-color:var(--krds-light-color-border-primary);
+  color:var(--krds-light-color-text-primary);
+  background:var(--krds-light-color-action-primary-hover);
+}
+.recent__del{
+  border:none!important;background:none!important;
+  color:var(--krds-light-color-text-subtle)!important;text-decoration:underline;
+}
+
+/* ══════ 레이아웃 ══════ */
+.krds-layout{
+  max-width:var(--krds-contents-size);margin:0 auto;
+  padding:var(--krds-gap-9) var(--krds-contents-padding-x) var(--krds-gap-11);
+  display:grid;grid-template-columns:26rem 1fr;gap:var(--krds-gap-10);align-items:start;
+}
+.filter-toggle{display:none}
+
+/* ══════ 필터 ══════ */
+.rail{
+  border:1px solid var(--krds-light-color-border-gray-light);
+  border-radius:var(--krds-radius-medium3);
+  background:var(--krds-light-color-surface-white);
+  position:sticky;top:var(--krds-gap-5);
+}
+.rail__head{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--krds-gap-3);
+  padding:var(--krds-gap-4) var(--krds-gap-5);
+  border-bottom:0.2rem solid var(--sh-navy);
+}
+.rail__head h2{
+  font-size:var(--krds-pc-font-size-heading-xsmall);font-weight:var(--krds-font-weight-bold);
+  color:var(--sh-navy);line-height:var(--krds-line-height-base);
+}
+.rail__reset{
+  min-height:4rem;padding:0 var(--krds-gap-3);
+  font-size:var(--krds-pc-font-size-label-xsmall);color:var(--krds-light-color-text-primary);
+  text-decoration:underline;text-underline-offset:var(--krds-font-underline-offset);
+  border-radius:var(--krds-radius-medium1);
+}
+.rail__reset:hover{background:var(--krds-light-color-action-primary-hover)}
+.rail__applied{
+  padding:var(--krds-gap-3) var(--krds-gap-5);
+  background:var(--krds-light-color-surface-primary-subtler);
+  border-bottom:1px solid var(--krds-light-color-divider-gray-light);
+  font-size:var(--krds-pc-font-size-label-xsmall);font-weight:var(--krds-font-weight-bold);
+  color:var(--krds-light-color-text-primary);
+}
+.rail__body{padding:0 var(--krds-gap-5) var(--krds-gap-4)}
+.fgroup{
+  padding:var(--krds-gap-5) 0;border:0;
+  border-bottom:1px solid var(--krds-light-color-divider-gray-light);
+}
+.fgroup:last-child{border-bottom:none}
+.fgroup__t{
+  font-size:var(--krds-pc-font-size-label-xsmall);font-weight:var(--krds-font-weight-bold);
+  color:var(--krds-light-color-text-subtle);margin-bottom:var(--krds-gap-3);
+  line-height:var(--krds-line-height-base);
+}
+.opt{
+  display:flex;align-items:center;gap:var(--krds-gap-3);
+  min-height:4rem;padding:0.2rem var(--krds-gap-3);
+  margin:0 calc(var(--krds-gap-3) * -1);
+  font-size:var(--krds-pc-font-size-body-small);color:var(--krds-light-color-text-subtle);
+  cursor:pointer;border-radius:var(--krds-radius-medium1);line-height:var(--krds-line-height-base);
+}
+.opt:hover{background:var(--krds-light-color-surface-gray-subtler);color:var(--krds-light-color-text-basic)}
+.opt:has(input:focus-visible){
+  outline:0.2rem solid #fff;box-shadow:var(--krds-box-shadow-outline);
+}
+.opt input{
+  width:2rem;height:2rem;accent-color:var(--krds-light-color-border-primary);
+  flex-shrink:0;cursor:pointer;margin:0;
+}
+.opt__n{
+  margin-left:auto;font-size:var(--krds-pc-font-size-label-xsmall);
+  color:var(--krds-light-color-text-subtle);font-variant-numeric:tabular-nums;
+}
+.opt--sub{padding-left:var(--krds-gap-7)}
+.opt input:checked ~ span:first-of-type{
+  color:var(--krds-light-color-text-primary);font-weight:var(--krds-font-weight-bold);
+}
+
+/* ══════ 아코디언형 분야 필터 (KRDS accordion 규격 준용) ══════ */
+.fgroup--acc{padding:var(--krds-gap-3) 0}
+.acc-item{margin-bottom:var(--krds-gap-2)}
+.acc-item:last-child{margin-bottom:0}
+.btn-accordion{
+  position:relative;width:100%;text-align:left;
+  display:flex;align-items:center;gap:var(--krds-gap-3);
+  min-height:var(--krds-touch-min);
+  padding:var(--krds-gap-3) var(--krds-gap-7) var(--krds-gap-3) var(--krds-gap-4);
+  background-color:var(--sh-head-gray);
+  border-radius:var(--krds-radius-medium1);
+  font-size:var(--krds-pc-font-size-body-small);
+  font-weight:var(--krds-font-weight-bold);
+  color:var(--krds-light-color-text-basic);
+  transition:background-color .18s ease, color .18s ease;
+}
+/* 시흥시 누리집 방식 : 마우스를 올리거나 펼치면 진한 남색으로 반전 */
+.btn-accordion:hover,
+.btn-accordion[aria-expanded="true"]{
+  background-color:var(--sh-navy-active);
+  color:#ffffff;
+}
+.btn-accordion:hover .acc-n,
+.btn-accordion[aria-expanded="true"] .acc-n,
+.btn-accordion:hover .acc-ico,
+.btn-accordion[aria-expanded="true"] .acc-ico{color:rgba(255,255,255,.85)}
+.btn-accordion:hover .acc-on,
+.btn-accordion[aria-expanded="true"] .acc-on{
+  background:rgba(255,255,255,.18);color:#ffffff;
+}
+.btn-accordion .acc-n{
+  margin-left:auto;font-size:var(--krds-pc-font-size-label-xsmall);
+  font-weight:var(--krds-font-weight-regular);
+  color:var(--krds-light-color-text-subtle);font-variant-numeric:tabular-nums;
+}
+.btn-accordion .acc-ico{
+  position:absolute;right:var(--krds-gap-4);
+  width:var(--krds-icon--size-large);height:var(--krds-icon--size-large);
+  color:var(--krds-light-color-text-subtle);transition:transform .2s;
+}
+.btn-accordion[aria-expanded="true"] .acc-ico{transform:rotate(180deg)}
+.btn-accordion .acc-on{
+  display:inline-flex;align-items:center;min-height:2.2rem;padding:0 0.6rem;
+  font-size:var(--krds-pc-font-size-label-xsmall);
+  background:var(--krds-light-color-surface-primary-subtler);
+  color:var(--krds-light-color-text-primary);
+  border-radius:var(--krds-radius-xsmall1);
+}
+.acc-panel{padding:var(--krds-gap-2) 0 var(--krds-gap-3) var(--krds-gap-4)}
+.acc-panel[hidden]{display:none}
+
+/* ══════ 결과 머리 ══════ */
+.rhead{
+  display:flex;align-items:flex-end;gap:var(--krds-gap-5);flex-wrap:wrap;
+  padding-bottom:var(--krds-gap-4);
+  border-bottom:0.2rem solid var(--sh-navy);
+}
+.rhead__n{
+  font-size:var(--krds-pc-font-size-heading-medium);color:var(--sh-navy);
+  font-weight:var(--krds-font-weight-regular);line-height:var(--krds-line-height-base);
+}
+.rhead__n b{font-weight:var(--krds-font-weight-bold)}
+.rhead__n span{
+  font-size:var(--krds-pc-font-size-body-small);
+  color:var(--krds-light-color-text-subtle);margin-left:var(--krds-gap-1);
+}
+.rhead__tools{margin-left:auto;display:flex;align-items:center;gap:var(--krds-gap-4);flex-wrap:wrap}
+.refine{
+  display:flex;align-items:center;gap:var(--krds-gap-3);
+  border:1px solid var(--krds-light-color-border-gray);
+  border-radius:var(--krds-radius-medium1);
+  background:var(--krds-light-color-surface-white);
+  padding:0 var(--krds-gap-4);min-height:var(--krds-touch-min);
+}
+.refine:focus-within{
+  border-color:var(--krds-light-color-border-primary);
+  box-shadow:none;
+  outline:0.1rem solid var(--krds-light-color-border-primary);
+  outline-offset:-0.2rem;
+}
+.refine input:focus-visible{outline:none;box-shadow:none}
+.refine label{
+  font-size:var(--krds-pc-font-size-label-xsmall);color:var(--krds-light-color-text-subtle);
+  white-space:nowrap;font-weight:var(--krds-font-weight-bold);
+}
+.refine input{
+  border:none;outline:none;background:none;
+  font-size:var(--krds-pc-font-size-body-small);width:14rem;padding:var(--krds-gap-3) 0;
+}
+.sortsel{
+  min-height:var(--krds-touch-min);padding:0 var(--krds-gap-4);
+  font-size:var(--krds-pc-font-size-body-small);
+  border:1px solid var(--krds-light-color-border-gray);
+  border-radius:var(--krds-radius-medium1);
+  background:var(--krds-light-color-surface-white);
+  color:var(--krds-light-color-text-basic);cursor:pointer;
+}
+.sortsel:hover{border-color:var(--krds-light-color-border-primary)}
+
+.chips{display:flex;gap:var(--krds-gap-3);flex-wrap:wrap;padding-top:var(--krds-gap-4);align-items:center}
+.chips__lb{
+  font-size:var(--krds-pc-font-size-label-xsmall);
+  font-weight:var(--krds-font-weight-bold);color:var(--krds-light-color-text-subtle);
+}
+.chip{
+  display:inline-flex;align-items:center;gap:var(--krds-gap-3);
+  min-height:3.6rem;padding:0 var(--krds-gap-3) 0 var(--krds-gap-4);
+  font-size:var(--krds-pc-font-size-label-xsmall);font-weight:var(--krds-font-weight-bold);
+  background:var(--krds-light-color-surface-primary-subtler);
+  color:var(--krds-light-color-text-primary);
+  border:1px solid var(--krds-color-light-primary-20);
+  border-radius:var(--krds-radius-medium1);
+}
+.chip button{
+  width:2.6rem;height:2.6rem;display:flex;align-items:center;justify-content:center;
+  color:var(--krds-light-color-text-primary);border-radius:var(--krds-radius-xsmall1);
+}
+.chip button:hover{background:var(--krds-color-light-primary-10)}
+
+/* ══════ 결과 목록 ══════ */
+.row{
+  display:block;width:100%;text-align:left;
+  padding:var(--krds-gap-6) var(--krds-gap-5);
+  border-bottom:1px solid var(--krds-light-color-divider-gray-light);
+  border-left:0.4rem solid transparent;
+  background:var(--krds-light-color-surface-white);
+  transition:background-color .12s,border-left-color .12s;
+}
+.row:hover{
+  background:var(--krds-light-color-surface-gray-subtler);
+  border-left-color:var(--krds-light-color-border-primary);
+}
+.row:focus-visible{
+  outline:0.2rem solid #fff;box-shadow:var(--krds-box-shadow-outline);
+  background:var(--krds-light-color-surface-gray-subtler);
+  border-left-color:var(--krds-light-color-border-primary);
+}
+.row:hover .row__t,.row:focus-visible .row__t{
+  color:var(--krds-light-color-text-primary);
+  text-decoration:underline;text-underline-offset:var(--krds-font-underline-offset);
+}
+.row__cat{display:flex;align-items:center;gap:var(--krds-gap-3);margin-bottom:var(--krds-gap-3);flex-wrap:wrap}
+.kind{
+  display:inline-flex;align-items:center;min-height:2.6rem;
+  font-size:var(--krds-pc-font-size-label-xsmall);font-weight:var(--krds-font-weight-bold);
+  padding:0 var(--krds-gap-3);border-radius:var(--krds-radius-xsmall1);
+  border:1px solid var(--krds-light-color-border-gray-dark);
+  color:var(--krds-light-color-text-subtle);background:var(--krds-light-color-surface-white);
+  line-height:var(--krds-line-height-base);
+}
+.kind--prevent{
+  border-color:var(--krds-color-light-primary-20);
+  color:var(--krds-light-color-text-primary);
+  background:var(--krds-light-color-surface-primary-subtler);
+}
+.crumb{
+  font-size:var(--krds-pc-font-size-label-xsmall);
+  color:var(--krds-light-color-text-subtle);line-height:var(--krds-line-height-base);
+}
+.crumb b{font-weight:var(--krds-font-weight-bold)}
+button.crumb.crumb--link{
+  display:inline-flex;align-items:center;gap:0.3rem;
+  background:none;border:0;padding:0;margin:0;cursor:pointer;
+  font-family:inherit;text-align:left;border-radius:var(--krds-radius-small1);
+}
+button.crumb.crumb--link:hover{color:var(--krds-light-color-text-primary);text-decoration:underline}
+button.crumb.crumb--link:hover b{text-decoration:underline}
+.row__t{
+  font-size:var(--krds-pc-font-size-heading-small);font-weight:var(--krds-font-weight-bold);
+  color:var(--krds-light-color-text-basic);line-height:var(--krds-line-height-base);
+  margin-bottom:var(--krds-gap-3);
+}
+.row__p{
+  font-size:var(--krds-pc-font-size-body-small);color:var(--krds-light-color-text-subtle);
+  line-height:var(--krds-line-height-base);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.row__meta{
+  display:flex;align-items:center;gap:var(--krds-gap-3) var(--krds-gap-4);
+  margin-top:var(--krds-gap-4);flex-wrap:wrap;
+  font-size:var(--krds-pc-font-size-label-xsmall);
+  color:var(--krds-light-color-text-subtle);line-height:var(--krds-line-height-base);
+}
+.result{
+  display:inline-flex;align-items:center;gap:0.6rem;min-height:2.6rem;
+  font-weight:var(--krds-font-weight-bold);color:var(--krds-light-color-text-basic);
+  padding:0 var(--krds-gap-3);background:var(--krds-light-color-surface-gray-subtle);
+  border-radius:var(--krds-radius-xsmall1);
+}
+.result--prevent{
+  background:var(--krds-light-color-surface-primary-subtler);color:var(--krds-light-color-text-primary);
+}
+.result--none{
+  background:var(--krds-light-color-surface-white);color:var(--krds-light-color-text-subtle);
+  border:1px dashed var(--krds-light-color-border-gray-dark);
+}
+.meta-div{color:var(--krds-light-color-border-gray)}
+.row__id{font-variant-numeric:tabular-nums}
+.flag{
+  display:inline-flex;align-items:center;gap:0.4rem;min-height:2.6rem;
+  color:var(--krds-light-color-text-warning);
+  background:var(--krds-light-color-surface-warning-subtler);
+  border:1px solid var(--krds-light-color-border-warning-light);
+  padding:0 var(--krds-gap-3);border-radius:var(--krds-radius-xsmall1);
+  font-weight:var(--krds-font-weight-bold);
+}
+mark{
+  background:var(--krds-color-light-warning-10);color:var(--krds-light-color-text-basic);
+  font-weight:var(--krds-font-weight-bold);padding:0 0.2rem;
+}
+
+/* ══════ 페이지네이션 (KRDS .krds-pagination 규격) ══════ */
+.krds-pagination{
+  --krds-pagination--color-text:var(--krds-light-color-text-subtle);
+  --krds-pagination--color-text-active:var(--krds-light-color-text-inverse-static);
+  --krds-pagination--color-text-disabled:var(--krds-light-color-text-disabled);
+  --krds-pagination--color-action:var(--krds-light-color-action-secondary);
+  --krds-pagination--color-action-hover:var(--krds-light-color-action-secondary-hover);
+  --krds-pagination--color-action-pressed:var(--krds-light-color-action-secondary-pressed);
+  --krds-pagination--color-action-active:var(--krds-light-color-action-secondary-active);
+  --krds-pagination-gap:var(--krds-gap-3);
+  --krds-pagination-margin-top:var(--krds-pc-gap-layout-h2-h3);
+  --krds-pagination--size-height:var(--krds-size-height-6);
+  --krds-pagination--radius:var(--krds-radius-medium1);
+  display:flex;align-items:center;justify-content:center;
+  gap:var(--krds-pagination-gap);width:100%;
+  margin-top:var(--krds-pagination-margin-top);
+  color:var(--krds-pagination--color-text);flex-wrap:wrap;
+}
+.krds-pagination .page-navi,
+.krds-pagination .page-link{
+  display:inline-flex;align-items:center;justify-content:center;
+  height:var(--krds-pagination--size-height);
+  min-width:var(--krds-pagination--size-height);
+  background-color:var(--krds-pagination--color-action);
+  border-radius:var(--krds-pagination--radius);
+  font-size:var(--krds-pc-font-size-body-small);
+  color:var(--krds-pagination--color-text);
+  transition:var(--krds-transition-base);
+}
+.krds-pagination .page-navi{gap:0.4rem;padding:0 var(--krds-padding-3)}
+.krds-pagination .page-navi:hover,
+.krds-pagination .page-link:hover{background-color:var(--krds-pagination--color-action-hover)}
+.krds-pagination .page-navi.prev{order:1}
+.krds-pagination .page-navi.next{order:3}
+.krds-pagination .page-navi.disabled{
+  color:var(--krds-pagination--color-text-disabled);
+  cursor:not-allowed;pointer-events:none;
+}
+.krds-pagination .page-links{
+  display:flex;align-items:center;justify-content:center;
+  order:2;gap:var(--krds-gap-3);flex-wrap:wrap;
+}
+.krds-pagination .page-links .page-link.link-dot{
+  background:none;cursor:default;pointer-events:none;
+  color:var(--krds-light-color-text-disabled);
+}
+.krds-pagination .page-links .page-link.active{
+  background-color:var(--krds-pagination--color-action-active);
+  font-weight:var(--krds-font-weight-bold);
+  color:var(--krds-pagination--color-text-active);
+}
+
+/* 목록 표시 개수 */
+.perpage{display:flex;align-items:center;gap:var(--krds-gap-3)}
+.perpage label{
+  font-size:var(--krds-pc-font-size-label-xsmall);
+  color:var(--krds-light-color-text-subtle);
+  font-weight:var(--krds-font-weight-bold);white-space:nowrap;
+}
+
+/* 변경 이력 (상세 정보 확인 패턴) */
+.revlog{
+  margin-top:var(--krds-gap-5);padding-top:var(--krds-gap-5);
+  border-top:1px solid var(--krds-light-color-divider-gray-light);
+  display:flex;gap:var(--krds-gap-6);flex-wrap:wrap;
+  font-size:var(--krds-pc-font-size-label-xsmall);
+  color:var(--krds-light-color-text-subtle);
+}
+.revlog dt{font-weight:var(--krds-font-weight-bold);display:inline}
+.revlog dd{display:inline;margin-left:0.4rem}
+
+/* ══════ 빈 결과 ══════ */
+.empty{padding:var(--krds-gap-11) var(--krds-gap-5);border-bottom:1px solid var(--krds-light-color-divider-gray-light)}
+.empty h3{
+  font-size:var(--krds-pc-font-size-heading-medium);color:var(--krds-light-color-text-secondary);
+  font-weight:var(--krds-font-weight-bold);margin-bottom:var(--krds-gap-5);
+  line-height:var(--krds-line-height-base);
+}
+.empty p{
+  font-size:var(--krds-pc-font-size-body-medium);color:var(--krds-light-color-text-subtle);
+  margin-bottom:var(--krds-gap-4);line-height:var(--krds-line-height-loose);
+}
+.empty li{
+  font-size:var(--krds-pc-font-size-body-small);color:var(--krds-light-color-text-subtle);
+  line-height:var(--krds-line-height-loose);padding-left:var(--krds-gap-5);position:relative;
+}
+.empty li::before{content:"–";position:absolute;left:0.2rem}
+.empty__act{margin-top:var(--krds-gap-6)}
+
+/* ══════ 버튼 ══════ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--krds-gap-3);
+  min-height:var(--krds-touch-min);padding:0 var(--krds-gap-6);
+  font-size:var(--krds-pc-font-size-body-small);font-weight:var(--krds-font-weight-bold);
+  border-radius:var(--krds-radius-medium1);
+  border:1px solid var(--krds-light-color-border-gray-dark);
+  color:var(--krds-light-color-text-basic);background:var(--krds-light-color-surface-white);
+  line-height:var(--krds-line-height-base);transition:background-color .12s,border-color .12s;
+}
+.btn:hover{
+  border-color:var(--krds-light-color-border-secondary);
+  background:var(--krds-light-color-action-secondary-hover);
+}
+.btn--primary{
+  background:var(--krds-light-color-border-primary);
+  border-color:var(--krds-light-color-border-primary);
+  color:var(--krds-light-color-text-inverse);
+}
+.btn--primary:hover{
+  background:var(--krds-color-light-primary-60);border-color:var(--krds-color-light-primary-60);
+  color:var(--krds-light-color-text-inverse);
+}
+.btn--text{
+  border-color:transparent;background:none;color:var(--krds-light-color-text-primary);
+  text-decoration:underline;text-underline-offset:var(--krds-font-underline-offset);
+  padding:0 var(--krds-gap-4);
+}
+.btn--text:hover{background:var(--krds-light-color-action-primary-hover);border-color:transparent}
+.btn--disabled{
+  background:var(--krds-light-color-action-disabled);
+  border-color:var(--krds-light-color-border-gray);
+  color:var(--krds-light-color-text-subtle);cursor:not-allowed;pointer-events:none;
+}
+
+/* ══════ 모달 ══════ */
+.scrim{
+  position:fixed;inset:0;background:var(--krds-light-color-background-dim);
+  display:none;align-items:flex-start;justify-content:center;
+  padding:var(--krds-gap-10) var(--krds-contents-padding-x);z-index:60;overflow-y:auto;
+}
+.scrim.on{display:flex}
+.modal{
+  position:relative;background:var(--krds-light-color-surface-white);
+  width:100%;max-width:78rem;border-radius:var(--krds-radius-xlarge1);
+  display:flex;flex-direction:column;max-height:calc(100vh - var(--krds-gap-10) * 2);
+}
+.modal:focus{outline:none}
+.modal__head{
+  padding:var(--krds-gap-6) var(--krds-gap-7);
+  border-bottom:0.2rem solid var(--sh-navy);flex-shrink:0;
+}
+.modal__kicker{
+  display:flex;align-items:center;gap:var(--krds-gap-3);
+  margin-bottom:var(--krds-gap-4);flex-wrap:wrap;padding-right:var(--krds-touch-min);
+}
+.modal__t{
+  font-size:var(--krds-pc-font-size-heading-medium);font-weight:var(--krds-font-weight-bold);
+  color:var(--krds-light-color-text-basic);line-height:var(--krds-line-height-base);
+  padding-right:var(--krds-touch-min);
+}
+.ledger{
+  display:flex;gap:var(--krds-gap-7);flex-wrap:wrap;margin-top:var(--krds-gap-5);
+  padding-top:var(--krds-gap-5);border-top:1px solid var(--krds-light-color-divider-gray-light);
+}
+.ledger dt{
+  font-size:var(--krds-pc-font-size-label-xsmall);color:var(--krds-light-color-text-subtle);
+  font-weight:var(--krds-font-weight-bold);margin-bottom:0.2rem;line-height:var(--krds-line-height-base);
+}
+.ledger dd{
+  font-size:var(--krds-pc-font-size-body-small);color:var(--krds-light-color-text-basic);
+  font-weight:var(--krds-font-weight-bold);line-height:var(--krds-line-height-base);
+}
+.modal__body{padding:var(--krds-gap-7);overflow-y:auto;flex:1 1 auto}
+.sec{margin-bottom:var(--krds-gap-7)}
+.sec:last-child{margin-bottom:0}
+.sec__t{
+  font-size:var(--krds-pc-font-size-label-medium);font-weight:var(--krds-font-weight-bold);
+  color:var(--krds-light-color-text-secondary);padding-bottom:var(--krds-gap-3);
+  margin-bottom:var(--krds-gap-4);
+  border-bottom:1px solid var(--krds-light-color-divider-gray-light);
+  line-height:var(--krds-line-height-base);
+}
+.sec p{
+  font-size:var(--krds-pc-font-size-body-medium);color:var(--krds-light-color-text-subtle);
+  line-height:var(--krds-line-height-loose);
+}
+.note{
+  display:flex;gap:var(--krds-gap-4);
+  background:var(--krds-light-color-surface-primary-subtler);
+  border:1px solid var(--krds-color-light-primary-20);
+  border-left:0.4rem solid var(--krds-light-color-border-primary);
+  border-radius:var(--krds-radius-medium1);
+  padding:var(--krds-gap-4) var(--krds-gap-5);
+  font-size:var(--krds-pc-font-size-body-small);
+  color:var(--krds-light-color-text-subtle);line-height:var(--krds-line-height-loose);
+}
+.note--warn{
+  background:var(--krds-light-color-surface-warning-subtler);
+  border-color:var(--krds-light-color-border-warning-light);
+  border-left-color:var(--krds-light-color-text-warning);
+}
+.note svg{color:var(--krds-light-color-text-primary);margin-top:0.3rem}
+.note--warn svg{color:var(--krds-light-color-text-warning)}
+.note b{color:var(--krds-light-color-text-basic);font-weight:var(--krds-font-weight-bold)}
+
+/* 자가점검 체크리스트 : 기본은 접힘, 머리를 누르면 펼쳐짐 */
+.check-toggle{
+  position:relative;width:100%;text-align:left;
+  display:flex;align-items:center;gap:var(--krds-gap-3);
+  min-height:var(--krds-touch-min);
+  padding:var(--krds-gap-3) var(--krds-gap-8) var(--krds-gap-3) var(--krds-gap-5);
+  background-color:var(--sh-head-gray);
+  border:1px solid var(--krds-light-color-border-gray-light);
+  border-radius:var(--krds-radius-medium1);
+  font-size:var(--krds-pc-font-size-body-small);
+  font-weight:var(--krds-font-weight-bold);
+  color:var(--krds-light-color-text-basic);
+  transition:background-color .18s ease, color .18s ease;
+}
+.check-toggle:hover,
+.check-toggle[aria-expanded="true"]{
+  background-color:var(--sh-navy-active);border-color:var(--sh-navy-active);color:#ffffff;
+}
+.check-toggle__n{
+  margin-left:auto;font-size:var(--krds-pc-font-size-label-xsmall);
+  font-weight:var(--krds-font-weight-regular);
+  color:var(--krds-light-color-text-subtle);font-variant-numeric:tabular-nums;
+}
+.check-toggle:hover .check-toggle__n,
+.check-toggle[aria-expanded="true"] .check-toggle__n,
+.check-toggle:hover .check-ico,
+.check-toggle[aria-expanded="true"] .check-ico{color:rgba(255,255,255,.85)}
+.check-ico{
+  position:absolute;right:var(--krds-gap-5);
+  width:var(--krds-icon--size-large);height:var(--krds-icon--size-large);
+  color:var(--krds-light-color-text-subtle);transition:transform .2s;
+}
+.check-toggle[aria-expanded="true"] .check-ico{transform:rotate(180deg)}
+.checklist{
+  border:1px solid var(--krds-light-color-border-gray-light);
+  border-top:none;
+  border-radius:0 0 var(--krds-radius-medium1) var(--krds-radius-medium1);
+}
+.checklist[hidden]{display:none}
+.checklist li{border-bottom:1px solid var(--krds-light-color-divider-gray-light)}
+.checklist li:last-child{border-bottom:none}
+.checklist label{
+  display:flex;gap:var(--krds-gap-4);align-items:flex-start;
+  font-size:var(--krds-pc-font-size-body-small);color:var(--krds-light-color-text-subtle);
+  padding:var(--krds-gap-4) var(--krds-gap-5);cursor:pointer;
+  line-height:var(--krds-line-height-loose);min-height:var(--krds-touch-min);
+}
+.checklist label:hover{background:var(--krds-light-color-surface-gray-subtler)}
+.checklist li:has(input:focus-visible){outline:0.2rem solid #fff;box-shadow:var(--krds-box-shadow-outline)}
+.checklist input{
+  width:2rem;height:2rem;margin-top:0.3rem;
+  accent-color:var(--krds-light-color-border-primary);flex-shrink:0;cursor:pointer;
+}
+.checklist input:checked + span{color:var(--krds-light-color-text-disabled);text-decoration:line-through}
+
+.laws li{
+  display:flex;align-items:center;gap:var(--krds-gap-4);flex-wrap:wrap;
+  padding:var(--krds-gap-4) 0;
+  border-bottom:1px solid var(--krds-light-color-divider-gray-light);
+  font-size:var(--krds-pc-font-size-body-small);
+}
+.laws li:last-child{border-bottom:none}
+.law__n{color:var(--krds-light-color-text-basic);font-weight:var(--krds-font-weight-bold);line-height:var(--krds-line-height-base)}
+.law__a{color:var(--krds-light-color-text-subtle);font-size:var(--krds-pc-font-size-label-xsmall);white-space:nowrap}
+.law__go{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  min-height:4rem;padding:0 var(--krds-gap-3);
+  font-size:var(--krds-pc-font-size-label-xsmall);font-weight:var(--krds-font-weight-bold);
+  color:var(--krds-light-color-text-primary);
+  text-decoration:underline;text-underline-offset:var(--krds-font-underline-offset);
+  border-radius:var(--krds-radius-medium1);white-space:nowrap;
+}
+.law__go:hover{background:var(--krds-light-color-action-primary-hover)}
+.law__actions{margin-left:auto;display:flex;align-items:center;gap:var(--krds-gap-2);flex-wrap:wrap}
+.law__view{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  min-height:4rem;padding:0 var(--krds-gap-3);
+  font-size:var(--krds-pc-font-size-label-xsmall);font-weight:var(--krds-font-weight-bold);
+  color:var(--krds-light-color-text-primary);
+  text-decoration:underline;text-underline-offset:var(--krds-font-underline-offset);
+  border:0;background:none;border-radius:var(--krds-radius-medium1);white-space:nowrap;cursor:pointer;
+  font-family:inherit;
+}
+.law__view:hover{background:var(--krds-light-color-action-primary-hover)}
+.law__view-ico{transition:transform 0.15s}
+.law__view[aria-expanded="true"] .law__view-ico{transform:rotate(180deg)}
+.law__body{
+  flex-basis:100%;width:100%;
+  margin-top:var(--krds-gap-2);padding:var(--krds-gap-4);
+  background:var(--krds-light-color-surface-gray-subtler);
+  border-radius:var(--krds-radius-medium1);
+  font-size:var(--krds-pc-font-size-body-small);
+  line-height:var(--krds-line-height-base);
+}
+.law__body-title{font-weight:var(--krds-font-weight-bold);margin-bottom:var(--krds-gap-2)}
+.law__body-text{white-space:pre-line;color:var(--krds-light-color-text-basic)}
+.law__body-meta{margin-top:var(--krds-gap-3);font-size:var(--krds-pc-font-size-label-xsmall);color:var(--krds-light-color-text-subtle)}
+.law__loading{color:var(--krds-light-color-text-subtle)}
+.law__error{color:var(--krds-light-color-text-warning)}
+.tags{display:flex;gap:var(--krds-gap-3);flex-wrap:wrap}
+.tag{
+  font-size:var(--krds-pc-font-size-label-xsmall);color:var(--krds-light-color-text-subtle);
+  min-height:2.8rem;display:inline-flex;align-items:center;
+  background:var(--krds-light-color-surface-gray-subtler);
+  border:1px solid var(--krds-light-color-border-gray-light);
+  border-radius:var(--krds-radius-xsmall1);padding:0 var(--krds-gap-3);
+}
+.modal__foot{
+  padding:var(--krds-gap-5) var(--krds-gap-7);
+  border-top:1px solid var(--krds-light-color-divider-gray-light);
+  background:var(--krds-light-color-surface-gray-subtler);
+  display:flex;align-items:center;gap:var(--krds-gap-4);flex-wrap:wrap;
+  font-size:var(--krds-pc-font-size-label-xsmall);color:var(--krds-light-color-text-subtle);
+  line-height:var(--krds-line-height-base);
+  border-radius:0 0 var(--krds-radius-xlarge1) var(--krds-radius-xlarge1);flex-shrink:0;
+}
+.modal__foot .sp{margin-left:auto;display:flex;gap:var(--krds-gap-3);align-items:center;flex-wrap:wrap}
+.modal__close{
+  position:absolute;top:var(--krds-gap-4);right:var(--krds-gap-4);
+  width:var(--krds-touch-min);height:var(--krds-touch-min);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--krds-light-color-text-subtle);border-radius:var(--krds-radius-medium1);
+  background:var(--krds-light-color-surface-white);
+}
+.modal__close:hover{background:var(--krds-light-color-surface-gray-subtle);color:var(--krds-light-color-text-basic)}
+
+/* ══════ 푸터 (KRDS 아이덴티티 : Footer) ══════ */
+.krds-footer{
+  background:var(--krds-light-color-surface-gray-subtler);
+  border-top:1px solid var(--krds-light-color-divider-gray-light);
+  margin-top:var(--krds-gap-11);
+}
+.krds-footer__in{
+  max-width:var(--krds-contents-size);margin:0 auto;
+  padding:var(--krds-gap-9) var(--krds-contents-padding-x);
+  display:flex;gap:var(--krds-gap-9);flex-wrap:wrap;
+}
+.krds-footer__org{flex:1 1 28rem;min-width:0}
+.krds-footer__name{
+  font-size:var(--krds-pc-font-size-heading-xsmall);
+  font-weight:var(--krds-font-weight-bold);
+  color:var(--sh-navy);margin-bottom:var(--krds-gap-3);
+}
+.krds-footer{border-top:0.3rem solid var(--sh-navy)}
+.krds-footer__info{
+  font-size:var(--krds-pc-font-size-label-xsmall);
+  color:var(--krds-light-color-text-subtle);line-height:var(--krds-line-height-loose);
+}
+.krds-footer__notice{
+  flex:1 1 32rem;font-size:var(--krds-pc-font-size-label-xsmall);
+  color:var(--krds-light-color-text-subtle);line-height:var(--krds-line-height-loose);
+}
+.krds-footer__notice b{color:var(--krds-light-color-text-basic);font-weight:var(--krds-font-weight-bold)}
+.krds-footer__copy{
+  border-top:1px solid var(--krds-light-color-divider-gray-light);
+  padding:var(--krds-gap-5) var(--krds-contents-padding-x);
+  max-width:var(--krds-contents-size);margin:0 auto;
+  font-size:var(--krds-pc-font-size-label-xsmall);
+  color:var(--krds-light-color-text-subtle);
+}
+
+/* ══════ 맨 위로 ══════ */
+.totop{
+  position:fixed;right:var(--krds-gap-7);bottom:calc(var(--krds-gap-7) + 6rem);
+  width:4.8rem;height:4.8rem;
+  border:1px solid var(--krds-light-color-border-gray-dark);
+  background:var(--krds-light-color-surface-white);
+  color:var(--krds-light-color-text-secondary);
+  display:none;align-items:center;justify-content:center;
+  border-radius:var(--krds-radius-medium3);z-index:40;
+}
+.totop.on{display:flex}
+.totop:hover{
+  background:var(--krds-light-color-border-secondary);
+  color:var(--krds-light-color-text-inverse);
+  border-color:var(--krds-light-color-border-secondary);
+}
+
+/* ══════ 반응형 (KRDS : 1023px 이하 padding 16px) ══════ */
+@media (max-width:1023px){
+  :root{--krds-contents-padding-x:16px}
+  .krds-layout{grid-template-columns:23rem 1fr;gap:var(--krds-gap-7)}
+}
+@media (max-width:900px){
+  :root{
+    --krds-pc-font-size-heading-xlarge:2.8rem;
+    --krds-pc-font-size-heading-large:2.4rem;
+    --krds-pc-font-size-heading-medium:2.2rem;
+  }
+  .totop{bottom:calc(var(--krds-gap-7) + 15rem)}
+  .krds-layout{grid-template-columns:1fr;gap:var(--krds-gap-5);padding-top:var(--krds-gap-6)}
+  .filter-toggle{
+    display:flex;align-items:center;justify-content:space-between;gap:var(--krds-gap-3);
+    width:100%;min-height:var(--krds-touch-min);padding:0 var(--krds-gap-5);
+    border:1px solid var(--krds-light-color-border-secondary);
+    border-radius:var(--krds-radius-medium1);
+    background:var(--krds-light-color-surface-white);color:var(--krds-light-color-text-secondary);
+    font-size:var(--krds-pc-font-size-body-small);font-weight:var(--krds-font-weight-bold);
+  }
+  .filter-toggle__n{
+    font-size:var(--krds-pc-font-size-label-xsmall);font-weight:var(--krds-font-weight-bold);
+    background:var(--krds-light-color-surface-primary-subtler);
+    color:var(--krds-light-color-text-primary);
+    padding:0.2rem var(--krds-gap-3);border-radius:var(--krds-radius-xsmall1);
+  }
+  .filter-toggle svg{transition:transform .15s}
+  .filter-toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
+  .rail{position:static;margin-top:var(--krds-gap-3)}
+  .rail[hidden]{display:none}
+  .rail__body{max-height:60vh;overflow-y:auto}
+  .searchsec{padding:var(--krds-gap-7) 0 var(--krds-gap-6)}
+  .rhead__tools{margin-left:0;width:100%}
+  .refine{flex:1}
+  .refine input{width:100%}
+  .scrim{padding:0}
+  .modal{max-width:none;min-height:100vh;max-height:none;border-radius:0}
+  .modal__head,.modal__body,.modal__foot{padding-left:var(--krds-gap-5);padding-right:var(--krds-gap-5)}
+  .modal__foot{border-radius:0}
+}
+@media (max-width:560px){
+  .gnb-notice__links{margin-left:0;width:100%}
+  .krds-header__util{
+    margin-left:0;width:100%;
+    border-top:1px solid var(--krds-light-color-divider-gray-light);padding-top:var(--krds-gap-3);
+  }
+  .row{padding:var(--krds-gap-5) var(--krds-gap-3)}
+  .modal__foot .sp{margin-left:0;width:100%}
+  .modal__foot .sp .btn{flex:1}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">본문 바로가기</a>
+
+<header class="krds-header">
+  <div class="krds-header__in">
+    <div class="brand">
+      <span class="brand__logo">
+        <img src="data:image/png;base64,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" alt="시흥시" width="200" height="88">
+      </span>
+      <span>
+        <span class="brand__t">사례로 점검하는 감사예방 시스템</span>
+        <span class="brand__s">감사사례 · 사전컨설팅·적극행정</span>
+      </span>
+    </div>
+    <nav class="krds-header__util" aria-label="이용 정보">
+      <button type="button" onclick="alert('즐겨찾기는 다음 단계에서 만듭니다.')">즐겨찾기</button>
+      <button type="button" onclick="alert('이용안내는 다음 단계에서 만듭니다.')">이용안내</button>
+      <button type="button" id="a11yToggle" aria-expanded="false" aria-controls="a11yPanel">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/><path d="M9 9h6M12 9v7" stroke-linecap="round"/>
+        </svg>
+        글자·화면 설정
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- 글자·화면 표시 설정 (KRDS 화면 크기 조정 + 선명한 화면 모드) -->
+<section class="a11y-panel" id="a11yPanel" hidden aria-label="글자·화면 표시 설정">
+  <div class="a11y-panel__in">
+    <div class="a11y-set">
+      <span class="a11y-set__t" id="zoomLabel">글자 크기</span>
+      <div class="a11y-set__opts" role="group" aria-labelledby="zoomLabel">
+        <button type="button" data-zoom="small" aria-pressed="false">작게</button>
+        <button type="button" data-zoom="medium" aria-pressed="true">보통</button>
+        <button type="button" data-zoom="large" aria-pressed="false">조금 크게</button>
+        <button type="button" data-zoom="xlarge" aria-pressed="false">크게</button>
+        <button type="button" data-zoom="xxlarge" aria-pressed="false">가장 크게</button>
+      </div>
+    </div>
+    <div class="a11y-set">
+      <span class="a11y-set__t" id="modeLabel">화면 표시 모드</span>
+      <div class="a11y-set__opts" role="group" aria-labelledby="modeLabel">
+        <button type="button" data-mode="light" aria-pressed="true">기본 (밝은 배경)</button>
+        <button type="button" data-mode="high-contrast" aria-pressed="false">선명하게 (어두운 배경)</button>
+      </div>
+    </div>
+    <div class="a11y-set a11y-panel__close">
+      <button class="btn" type="button" id="a11yReset">초기화</button>
+    </div>
+  </div>
+</section>
+
+
+<section class="searchsec" aria-labelledby="searchTitle">
+  <div class="krds-shell">
+    <h1 class="searchsec__title" id="searchTitle">감사사례 통합검색</h1>
+
+    <div class="searchbox">
+      <label class="searchbox__label" for="q">검색어</label>
+      <div class="searchbox__field">
+        <span class="searchbox__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <input id="q" type="search" placeholder="검색어를 입력해 주세요" autocomplete="off" aria-describedby="searchHelp">
+        <button class="searchbox__clear" id="qclear" type="button" aria-label="검색어 전체 삭제" hidden>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <p id="searchHelp" class="sr-only">검색어를 입력하면 결과가 즉시 표시됩니다. 예를 들어 수의계약, 출장여비, 이해충돌과 같이 입력합니다.</p>
+    </div>
+
+    <div class="searchsec__meta">
+      <span>전체 <strong id="total">0</strong>건</span>
+      <span class="recent" id="recent" hidden></span>
+    </div>
+  </div>
+</section>
+
+<div class="krds-layout" id="main">
+  <div>
+    <button class="filter-toggle" id="filterToggle" type="button" aria-expanded="false" aria-controls="rail">
+      <span>검색 조건 좁히기</span>
+      <span style="display:flex;align-items:center;gap:0.8rem">
+        <span class="filter-toggle__n" id="filterCount">전체</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </span>
+    </button>
+
+    <aside class="rail" id="rail" aria-labelledby="railTitle">
+      <div class="rail__head">
+        <h2 id="railTitle">검색 조건</h2>
+        <button class="rail__reset" id="reset" type="button">전체 해제</button>
+      </div>
+      <p class="rail__applied" id="railApplied" hidden></p>
+      <div id="filters" class="rail__body"></div>
+    </aside>
+  </div>
+
+  <main class="main" aria-labelledby="resultTitle">
+    <h2 class="sr-only" id="resultTitle">검색 결과</h2>
+    <div class="rhead">
+      <p class="rhead__n" id="cntWrap" aria-live="assertive"><b id="cnt">0</b>건<span id="cntnote"></span></p>
+      <div class="rhead__tools">
+        <span class="refine">
+          <label for="refine">결과 내</label>
+          <input id="refine" type="search" placeholder="세부검색" autocomplete="off">
+        </span>
+        <span class="perpage">
+          <label for="perpage">목록 표시 개수</label>
+          <select class="sortsel" id="perpage">
+            <option value="10" selected>10개</option>
+            <option value="20">20개</option>
+            <option value="50">50개</option>
+          </select>
+        </span>
+        <label class="sr-only" for="sort">정렬 기준</label>
+        <select class="sortsel" id="sort">
+          <option value="rel">관련도순</option>
+          <option value="new">최신순</option>
+        </select>
+      </div>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="list" id="list"></div>
+    <nav class="krds-pagination" id="pager" aria-label="검색 결과 페이지"></nav>
+  </main>
+</div>
+
+<div class="scrim" id="scrim">
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1"></div>
+</div>
+
+<footer class="krds-footer">
+  <div class="krds-footer__in">
+    <div class="krds-footer__org">
+      <p class="krds-footer__name">시흥시청 감사담당관</p>
+      <p class="krds-footer__info">
+        경기도 시흥시 시청로 20<br>
+        자료 정정·추가 문의 : 청렴감사팀 (내선 2073)
+      </p>
+    </div>
+    <div class="krds-footer__notice">
+      <p><b>이용 안내</b> · 본 서비스는 이미 공개된 감사·사전컨설팅·적극행정 자료를 재구성한 참고 도구입니다. 수록된 사례와 해석은 참고용이며, 개별 사안의 최종 판단 근거가 아닙니다.</p>
+      <p style="margin-top:0.8rem"><b>출처 및 저작권</b> · 각 사례의 원문 저작권은 감사원·국민권익위원회 등 원 출처 기관에 있으며, 본 서비스는 원문을 저장하지 않고 공개 링크로 연결합니다.</p>
+    </div>
+  </div>
+  <div class="krds-footer__copy">
+    © 시흥시. 이 누리집은 시흥시청 감사담당관이 운영합니다.
+  </div>
+</footer>
+
+<div class="gnb-notice gnb-notice--fixed" role="complementary" aria-label="제도 안내">
+  <div class="gnb-notice__in">
+    <span class="gnb-notice__tag">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01" stroke-linecap="round"/>
+      </svg>안내
+    </span>
+    <span class="gnb-notice__txt">판단이 어려운 사안은 감사원 사전컨설팅을, 적극적으로 일한 결과는 적극행정 면책으로.</span>
+    <span class="gnb-notice__links">
+      <button type="button" onclick="alert('제도 안내 화면은 다음 단계에서 만듭니다.')">제도 안내</button>
+      <button type="button" onclick="alert('신청 방법 화면은 다음 단계에서 만듭니다.')">신청 방법</button>
+    </span>
+  </div>
+</div>
+
+<button class="totop" id="totop" type="button" aria-label="맨 위로 이동">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+</button>
+
+<script>
+/* ──────────────────────────────────────────────────────────────
+   국가법령정보센터 조문 실시간 조회 (선택 기능)
+   - 이 파일은 서버가 없는 단일 HTML이라, API 인증키(OC)를 여기 직접
+     넣으면 "보기 소스"로 누구나 키를 볼 수 있어 보안상 넣지 않습니다.
+   - 대신 Cloudflare Workers 등으로 배포한 프록시 서버의 주소를
+     아래 LAW_PROXY 에 붙여넣으면, 상세 화면의 "조문 내용 보기" 버튼이
+     나타나서 해당 조문의 현재 원문을 API로 직접 불러와 보여줍니다.
+   - 빈 문자열("")로 두면 이 기능은 자동으로 숨겨지고, 기존처럼
+     "국가법령정보센터 가기" 링크만 표시됩니다.
+   ────────────────────────────────────────────────────────────── */
+const LAW_PROXY = "https://audit-law-proxy.shgamsa0.workers.dev";
+
+const CASES = [
+ {
+  "id": "SH-2026-0001",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "02",
+  "minor": "0201",
+  "minorName": "수의계약",
+  "title": "견적서 2인 미징구 수의계약 부적정",
+  "point": "2인 이상 견적서를 받지 않고 1인 견적만으로 수의계약을 체결함",
+  "detail": "소액 물품 구매를 수의계약으로 처리하면서 안내공고 없이 1인 견적서만으로 계약상대자를 결정하여 경쟁성 확보 절차를 지키지 않음",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "지방자치단체를 당사자로 하는 계약에 관한 법률",
+    "article": "제9조",
+    "url": "https://www.law.go.kr"
+   },
+   {
+    "name": "지방자치단체를 당사자로 하는 계약에 관한 법률 시행령",
+    "article": "제30조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "수의계약",
+   "견적서",
+   "계약절차"
+  ],
+  "source": "감사원",
+  "url": "",
+  "link": "없음",
+  "checklist": "CL-0201",
+  "extra": "동일 상대방 반복계약 여부도 함께 확인",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0002",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "02",
+  "minor": "0201",
+  "minorName": "수의계약",
+  "title": "분할계약을 통한 수의계약 한도 회피",
+  "point": "하나의 사업을 여러 건으로 나누어 수의계약 한도 이내로 만들어 계약함",
+  "detail": "실질적으로 동일한 공사를 시기·항목만 나누어 여러 건의 수의계약으로 분할 체결하여 경쟁입찰 대상을 회피함",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "지방자치단체를 당사자로 하는 계약에 관한 법률 시행령",
+    "article": "제25조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "수의계약",
+   "분할계약",
+   "한도회피"
+  ],
+  "source": "감사원",
+  "url": "",
+  "link": "없음",
+  "checklist": "CL-0201",
+  "extra": "",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0003",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "01",
+  "minor": "0103",
+  "minorName": "지출증빙",
+  "title": "증빙서류 미비 상태 지출",
+  "point": "지출 관련 증빙서류를 제대로 갖추지 않고 비용을 지출함",
+  "detail": "집행 내역을 뒷받침할 세금계산서·거래명세서 등 증빙을 구비하지 않은 채 예산을 지출하여 지출의 적정성을 확인할 수 없음",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "지방회계법",
+    "article": "제38조",
+    "url": "https://www.law.go.kr"
+   },
+   {
+    "name": "지방재정법",
+    "article": "제17조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "지출증빙",
+   "증빙미비",
+   "지출"
+  ],
+  "source": "감사원",
+  "url": "",
+  "link": "없음",
+  "checklist": "CL-0103",
+  "extra": "",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0004",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "01",
+  "minor": "0101",
+  "minorName": "세출",
+  "title": "예산 목적 외 사용",
+  "point": "편성 목적과 다른 용도로 세출예산을 집행함",
+  "detail": "특정 목적으로 편성된 예산을 관련성이 낮은 다른 사업에 전용 절차 없이 사용함",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "지방재정법",
+    "article": "제47조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "세출",
+   "목적외사용",
+   "예산전용"
+  ],
+  "source": "감사원",
+  "url": "",
+  "link": "없음",
+  "checklist": "",
+  "extra": "",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0005",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "05",
+  "minor": "0504",
+  "minorName": "수당",
+  "title": "초과근무수당 부적정 지급",
+  "point": "실제 근무하지 않은 초과근무에 대해 수당을 지급함",
+  "detail": "초과근무 사실 확인이 어려운 상태에서 정액 방식으로 초과근무수당을 지급하여 일부가 과다 지급됨",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "지방공무원 수당 등에 관한 규정",
+    "article": "제15조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "초과근무수당",
+   "수당",
+   "복무"
+  ],
+  "source": "감사원",
+  "url": "",
+  "link": "없음",
+  "checklist": "",
+  "extra": "환수 대상 금액 산정 시 개인별 확인 필요",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0006",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "05",
+  "minor": "0503",
+  "minorName": "복무",
+  "title": "출장명령 없이 여비 수령",
+  "point": "출장명령·복무 근거 없이 출장여비를 지급받음",
+  "detail": "실제 출장 사실이나 명령 근거가 확인되지 않는 건에 대해 출장여비가 지급되어 복무·여비 관리가 부적정함",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "지방공무원 복무규정",
+    "article": "제6조",
+    "url": "https://www.law.go.kr"
+   },
+   {
+    "name": "공무원 여비 규정",
+    "article": "제6조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "출장여비",
+   "복무",
+   "여비"
+  ],
+  "source": "감사원",
+  "url": "",
+  "link": "없음",
+  "checklist": "CL-0503",
+  "extra": "",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0007",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "03",
+  "minor": "0302",
+  "minorName": "정산",
+  "title": "보조금 집행잔액 미반환",
+  "point": "보조사업 종료 후 집행잔액을 반환하지 않음",
+  "detail": "보조사업 정산 시 사용하지 않은 집행잔액과 이자를 반납하지 않아 정산이 부적정하게 처리됨",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "지방자치단체 보조금 관리에 관한 법률",
+    "article": "제18조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "보조금",
+   "정산",
+   "반환"
+  ],
+  "source": "감사원",
+  "url": "",
+  "link": "없음",
+  "checklist": "CL-0302",
+  "extra": "",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0008",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "03",
+  "minor": "0301",
+  "minorName": "교부",
+  "title": "보조사업자 자격 미검토 교부",
+  "point": "보조사업자 자격·요건을 확인하지 않고 보조금을 교부함",
+  "detail": "교부 전 사업자 자격과 사업계획의 적정성을 충분히 검토하지 않고 보조금을 지급함",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "지방자치단체 보조금 관리에 관한 법률",
+    "article": "제10조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "보조금",
+   "교부",
+   "자격검토"
+  ],
+  "source": "감사원",
+  "url": "",
+  "link": "없음",
+  "checklist": "",
+  "extra": "",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0009",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "04",
+  "minor": "0403",
+  "minorName": "준공",
+  "title": "준공검사 부적정",
+  "point": "공사 준공검사를 형식적으로 실시함",
+  "detail": "시공 내용과 설계 대비 확인을 소홀히 한 채 준공검사조서를 작성하여 준공 처리함",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "지방자치단체를 당사자로 하는 계약에 관한 법률",
+    "article": "제17조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "준공",
+   "공사감독",
+   "검사"
+  ],
+  "source": "감사원",
+  "url": "",
+  "link": "없음",
+  "checklist": "",
+  "extra": "",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0010",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "07",
+  "minor": "0704",
+  "minorName": "체납처분",
+  "title": "체납처분 지연·누락",
+  "point": "지방세 체납액에 대한 체납처분을 지연하거나 누락함",
+  "detail": "체납 발생 후 압류 등 체납처분 절차를 제때 진행하지 않아 징수 실기 우려가 있음",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "지방세징수법",
+    "article": "제33조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "체납처분",
+   "징수",
+   "지방세"
+  ],
+  "source": "감사원",
+  "url": "",
+  "link": "없음",
+  "checklist": "",
+  "extra": "소멸시효 임박 건 우선 확인",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0011",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "08",
+  "minor": "0802",
+  "minorName": "과태료",
+  "title": "과태료 부과·징수 누락",
+  "point": "위반 사실을 확인하고도 과태료를 부과·징수하지 않음",
+  "detail": "단속·적발 자료가 있음에도 과태료 부과 처리가 되지 않아 형평성·세입 관리에 문제가 있음",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "질서위반행위규제법",
+    "article": "제17조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "과태료",
+   "부과",
+   "징수"
+  ],
+  "source": "감사원",
+  "url": "",
+  "link": "없음",
+  "checklist": "",
+  "extra": "",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0012",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "09",
+  "minor": "0902",
+  "minorName": "개인정보",
+  "title": "개인정보 접근권한 관리 소홀",
+  "point": "개인정보처리시스템 접근권한을 부적정하게 관리함",
+  "detail": "퇴직·인사이동자의 접근권한을 즉시 회수하지 않고, 접속기록 점검을 정기적으로 수행하지 않음",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "개인정보 보호법",
+    "article": "제29조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "개인정보",
+   "접근권한",
+   "보안"
+  ],
+  "source": "감사원",
+  "url": "https://www.bai.go.kr",
+  "link": "확인필요",
+  "checklist": "",
+  "extra": "",
+  "pub": "2024-11-01",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0013",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "06",
+  "minor": "0603",
+  "minorName": "보조사업",
+  "title": "사회복지 보조금 집행 부적정",
+  "point": "사회복지시설 보조금을 사용 용도와 다르게 집행함",
+  "detail": "보조금을 승인된 사업 목적과 다른 항목에 사용하고 증빙 관리가 미흡함",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "사회복지사업법",
+    "article": "제42조",
+    "url": "https://www.law.go.kr"
+   },
+   {
+    "name": "지방자치단체 보조금 관리에 관한 법률",
+    "article": "제18조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "사회복지",
+   "보조사업",
+   "정산"
+  ],
+  "source": "감사원",
+  "url": "",
+  "link": "없음",
+  "checklist": "CL-0302",
+  "extra": "",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0014",
+  "type": "감사사례",
+  "caseType": "",
+  "major": "11",
+  "minor": "1102",
+  "minorName": "민원",
+  "title": "민원 처리기한 도과",
+  "point": "법정 처리기한을 넘겨 민원을 처리함",
+  "detail": "정당한 사유 없이 민원 처리기한을 초과하고 연장 통지도 하지 않음",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "",
+  "laws": [
+   {
+    "name": "민원 처리에 관한 법률",
+    "article": "제17조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "○○과",
+  "tags": [
+   "민원",
+   "처리기한",
+   "일반행정"
+  ],
+  "source": "감사원",
+  "url": "",
+  "link": "없음",
+  "checklist": "",
+  "extra": "",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0020",
+  "type": "사전컨설팅",
+  "caseType": "",
+  "major": "03",
+  "minor": "0303",
+  "minorName": "집행",
+  "title": "긴급 지원금 집행 방식 컨설팅",
+  "point": "불명확한 지침 아래 긴급 지원금 집행이 가능한지",
+  "detail": "재난·감염병 대응 등 긴급 상황에서 지침이 명확하지 않은 지원금을 집행할 수 있는지에 대해 감사원이 의견을 제시한 사례",
+  "consult": "조건부가능",
+  "opinion": "일정 요건과 사후 정산·기록 관리를 전제로 집행 가능하다는 의견",
+  "requestOrg": "○○시 ○○과",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "컨설팅 조건부가능",
+  "laws": [],
+  "org": "감사원",
+  "tags": [
+   "사전컨설팅",
+   "긴급집행",
+   "재난대응"
+  ],
+  "source": "감사원",
+  "url": "https://www.bai.go.kr/proactive/consult/bbs/listBoardArticles.do?bbsId=BBSMSTR_100000000062",
+  "link": "정상",
+  "checklist": "",
+  "extra": "의견은 해당 신청 사안 전제에 한정",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0021",
+  "type": "사전컨설팅",
+  "caseType": "",
+  "major": "02",
+  "minor": "0204",
+  "minorName": "설계변경",
+  "title": "설계변경 가부 컨설팅",
+  "point": "현장 여건 변화에 따른 설계변경이 가능한지",
+  "detail": "공사 중 현장 여건이 달라져 설계변경이 필요한 상황에서 변경 처리의 적법성에 대해 감사원이 처리 방향을 제시한 사례",
+  "consult": "가능",
+  "opinion": "관련 기준을 충족하면 설계변경 처리가 가능하다는 의견",
+  "requestOrg": "○○시 ○○과",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "컨설팅 가능",
+  "laws": [],
+  "org": "감사원",
+  "tags": [
+   "사전컨설팅",
+   "설계변경",
+   "계약"
+  ],
+  "source": "감사원",
+  "url": "https://www.bai.go.kr/proactive/consult/bbs/listBoardArticles.do?bbsId=BBSMSTR_100000000062",
+  "link": "정상",
+  "checklist": "",
+  "extra": "의견은 해당 신청 사안 전제에 한정",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0022",
+  "type": "사전컨설팅",
+  "caseType": "",
+  "major": "08",
+  "minor": "0803",
+  "minorName": "개발행위",
+  "title": "개발행위 허가 가부 컨설팅",
+  "point": "규제가 불명확한 개발행위 허가가 가능한지",
+  "detail": "법령 해석이 모호한 개발행위 허가 사안에 대해 허가 요건 충족 여부를 전제로 처리 방향을 제시한 사례",
+  "consult": "조건부가능",
+  "opinion": "일정 요건 충족 및 관계기관 협의를 전제로 허가 가능하다는 의견",
+  "requestOrg": "○○시 ○○과",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "컨설팅 조건부가능",
+  "laws": [],
+  "org": "감사원",
+  "tags": [
+   "사전컨설팅",
+   "개발행위",
+   "인허가"
+  ],
+  "source": "감사원",
+  "url": "https://www.law.go.kr",
+  "link": "정상",
+  "checklist": "",
+  "extra": "의견은 해당 신청 사안 전제에 한정",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0023",
+  "type": "사전컨설팅",
+  "caseType": "",
+  "major": "03",
+  "minor": "0303",
+  "minorName": "집행",
+  "title": "보조금 목적 외 사용 가부 컨설팅",
+  "point": "기존 보조금을 다른 용도로 사용할 수 있는지",
+  "detail": "교부된 보조금을 당초와 다른 용도로 사용하는 것이 가능한지에 대해, 목적 외 사용에 해당하여 곤란하다는 의견이 제시된 사례",
+  "consult": "불가",
+  "opinion": "목적 외 사용에 해당하여 그대로 집행하기는 어렵다는 의견",
+  "requestOrg": "○○시 ○○과",
+  "immunity": "",
+  "ground": "",
+  "resultLabel": "컨설팅 불가",
+  "laws": [],
+  "org": "감사원",
+  "tags": [
+   "사전컨설팅",
+   "보조금",
+   "목적외사용"
+  ],
+  "source": "감사원",
+  "url": "https://www.bai.go.kr/proactive/consult/bbs/listBoardArticles.do?bbsId=BBSMSTR_100000000062",
+  "link": "정상",
+  "checklist": "",
+  "extra": "의견은 해당 신청 사안 전제에 한정",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0024",
+  "type": "적극행정",
+  "caseType": "",
+  "major": "02",
+  "minor": "0201",
+  "minorName": "수의계약",
+  "title": "불가피한 단독업체 수의계약(면책)",
+  "point": "경쟁이 어려운 상황에서 단독업체와 수의계약을 체결함",
+  "detail": "인근에 대체 업체가 없어 사실상 유일한 업체와 수의계약을 체결한 사안으로, 공익상 불가피성이 인정되어 면책된 사례",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "면책인정",
+  "ground": "공공서비스 유지를 위한 불가피한 선택으로 공익성과 적극성이 인정됨",
+  "resultLabel": "면책인정",
+  "laws": [
+   {
+    "name": "지방자치단체를 당사자로 하는 계약에 관한 법률",
+    "article": "제9조",
+    "url": "https://www.law.go.kr"
+   }
+  ],
+  "org": "감사원",
+  "tags": [
+   "적극행정",
+   "면책",
+   "수의계약"
+  ],
+  "source": "감사원",
+  "url": "https://www.bai.go.kr/proactive/html/adm/adm_overview.do",
+  "link": "정상",
+  "checklist": "",
+  "extra": "",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0025",
+  "type": "적극행정",
+  "caseType": "",
+  "major": "08",
+  "minor": "0803",
+  "minorName": "개발행위",
+  "title": "규정 적극 해석을 통한 개발 허가(면책)",
+  "point": "토지이용 규정을 적극 해석해 시설 설치를 허가함",
+  "detail": "지역경제 필요성을 고려해 토지이용 관련 규정을 적극적으로 해석하여 시설 설치를 허가한 사안으로, 공익 기여가 인정되어 면책된 사례",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "면책인정",
+  "ground": "경제 활성화 등 공익 기여가 인정되고 고의·중과실이 없다고 판단됨",
+  "resultLabel": "면책인정",
+  "laws": [],
+  "org": "감사원",
+  "tags": [
+   "적극행정",
+   "면책",
+   "개발행위"
+  ],
+  "source": "감사원",
+  "url": "https://www.bai.go.kr/proactive/html/adm/adm_overview.do",
+  "link": "정상",
+  "checklist": "",
+  "extra": "",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0026",
+  "type": "적극행정",
+  "caseType": "",
+  "major": "04",
+  "minor": "0404",
+  "minorName": "안전관리",
+  "title": "재난 긴급복구 선조치(면책)",
+  "point": "정식 절차에 앞서 긴급복구를 선조치함",
+  "detail": "주민 안전을 위해 정식 계약·승인 절차 이전에 긴급복구를 먼저 시행한 사안으로, 긴급성과 공익성이 인정되어 면책된 사례",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "면책인정",
+  "ground": "긴급한 공공 안전 확보를 위한 조치로 적극성과 불가피성이 인정됨",
+  "resultLabel": "면책인정",
+  "laws": [],
+  "org": "감사원",
+  "tags": [
+   "적극행정",
+   "면책",
+   "긴급복구",
+   "안전관리"
+  ],
+  "source": "감사원",
+  "url": "https://www.bai.go.kr/proactive/html/adm/adm_overview.do",
+  "link": "정상",
+  "checklist": "",
+  "extra": "",
+  "pub": "",
+  "reg": "2026-07-28"
+ },
+ {
+  "id": "SH-2026-0027",
+  "type": "적극행정",
+  "caseType": "",
+  "major": "01",
+  "minor": "0103",
+  "minorName": "지출증빙",
+  "title": "면책 불인정(절차상 중대 하자)",
+  "point": "적극행정 주장이 있었으나 중대한 절차상 하자로 면책이 인정되지 않음",
+  "detail": "공익 목적이라는 주장이 있었으나 필수적인 검토·결재 절차를 생략하는 등 중대한 절차상 하자가 있어 면책이 인정되지 않은 사례",
+  "consult": "",
+  "opinion": "",
+  "requestOrg": "",
+  "immunity": "불인정",
+  "ground": "중대한 절차상 하자가 있어 면책 요건을 충족하지 못함",
+  "resultLabel": "불인정",
+  "laws": [],
+  "org": "감사원",
+  "tags": [
+   "적극행정",
+   "면책불인정",
+   "절차하자"
+  ],
+  "source": "감사원",
+  "url": "https://www.bai.go.kr/proactive/html/adm/adm_overview.do",
+  "link": "정상",
+  "checklist": "",
+  "extra": "불인정 사례도 학습용으로 게시",
+  "pub": "",
+  "reg": "2026-07-28"
+ }
+];
+const CHECKLISTS = {
+ "CL-0201": [
+  "수의계약 사유가 지방계약법령 요건에 부합하는가",
+  "견적서를 2인 이상으로부터 징구했는가",
+  "계약금액이 수의계약 한도 이내인가",
+  "1인 견적 시 사유서를 작성·결재했는가",
+  "분할계약으로 한도를 회피하지 않았는가"
+ ],
+ "CL-0103": [
+  "증빙서류가 원본·정본으로 구비됐는가",
+  "지출 목적과 증빙 내용이 일치하는가",
+  "집행 시기가 예산·회계연도에 맞는가",
+  "카드·현금 사용 규정을 준수했는가",
+  "정산·반납이 필요한 잔액을 처리했는가"
+ ],
+ "CL-0503": [
+  "근무·출장이 명령에 근거하는가",
+  "초과근무·출장 실적이 사실과 부합하는가",
+  "복무 관련 수당 지급 요건을 충족하는가",
+  "겸직·영리행위 제한을 준수했는가"
+ ],
+ "CL-0302": [
+  "정산서류가 교부조건·지침에 맞는가",
+  "집행 잔액을 규정대로 반환했는가",
+  "목적 외 사용은 없는가",
+  "증빙과 집행 내역이 일치하는가",
+  "정산 기한을 준수했는가"
+ ]
+};
+const CATS = {
+ "01": {
+  "name": "예산·회계",
+  "minors": {
+   "0101": "세출",
+   "0102": "세입",
+   "0103": "지출증빙",
+   "0104": "세입세출외현금",
+   "0105": "물품·공유재산",
+   "0100": "기타"
+  }
+ },
+ "02": {
+  "name": "계약·조달",
+  "minors": {
+   "0201": "수의계약",
+   "0202": "입찰",
+   "0203": "계약심사",
+   "0204": "설계변경",
+   "0205": "하도급",
+   "0206": "검사·하자",
+   "0200": "기타"
+  }
+ },
+ "03": {
+  "name": "보조금·민간위탁",
+  "minors": {
+   "0301": "교부",
+   "0302": "정산",
+   "0303": "집행",
+   "0304": "성과평가",
+   "0305": "반환",
+   "0306": "위탁사무 관리",
+   "0300": "기타"
+  }
+ },
+ "04": {
+  "name": "건설·시설",
+  "minors": {
+   "0401": "설계",
+   "0402": "공사감독",
+   "0403": "준공",
+   "0404": "안전관리",
+   "0405": "인허가",
+   "0400": "기타"
+  }
+ },
+ "05": {
+  "name": "인사·복무",
+  "minors": {
+   "0501": "채용",
+   "0502": "승진",
+   "0503": "복무",
+   "0504": "수당",
+   "0505": "공무직",
+   "0506": "이해충돌",
+   "0500": "기타"
+  }
+ },
+ "06": {
+  "name": "사회복지",
+  "minors": {
+   "0601": "급여·지원대상",
+   "0602": "시설관리",
+   "0603": "보조사업",
+   "0604": "지도점검",
+   "0600": "기타"
+  }
+ },
+ "07": {
+  "name": "세정·체납",
+  "minors": {
+   "0701": "부과",
+   "0702": "감면",
+   "0703": "징수",
+   "0704": "체납처분",
+   "0705": "가상자산",
+   "0700": "기타"
+  }
+ },
+ "08": {
+  "name": "환경·교통·도시",
+  "minors": {
+   "0801": "인허가",
+   "0802": "과태료",
+   "0803": "개발행위",
+   "0804": "주정차",
+   "0805": "폐기물",
+   "0800": "기타"
+  }
+ },
+ "09": {
+  "name": "정보화·개인정보",
+  "minors": {
+   "0901": "정보시스템",
+   "0902": "개인정보",
+   "0903": "보안",
+   "0904": "전산장비",
+   "0900": "기타"
+  }
+ },
+ "10": {
+  "name": "청렴·행동강령",
+  "minors": {
+   "1001": "갑질",
+   "1002": "외부강의",
+   "1003": "금품수수",
+   "1004": "공정한 직무수행",
+   "1000": "기타"
+  }
+ },
+ "11": {
+  "name": "일반행정",
+  "minors": {
+   "1101": "기록물",
+   "1102": "민원",
+   "1103": "위원회",
+   "1104": "행사",
+   "1105": "공공요금",
+   "1100": "기타"
+  }
+ }
+};
+
+const PREVENT = new Set(["사전컨설팅","적극행정"]);
+const $ = s => document.querySelector(s);
+const esc = s => String(s??"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const state = { q:"", refine:"", sort:"rel", page:1, perPage:10,
+  f:{ type:new Set(), major:new Set(), minor:new Set() }, recent:[] };
+
+const W = { title:10, tags:8, point:7, detail:4, minorName:4, org:2, laws:3, opinion:4, ground:4 };
+function scoreOf(c, terms){
+  let s = 0;
+  for(const t of terms){
+    if(!t) continue;
+    const hit = f => (f||"").toLowerCase().includes(t);
+    if(hit(c.title)) s += W.title;
+    if(hit(c.tags.join(" "))) s += W.tags;
+    if(hit(c.point)) s += W.point;
+    if(hit(c.detail)) s += W.detail;
+    if(hit(c.minorName)) s += W.minorName;
+    if(hit(c.org)) s += W.org;
+    if(hit(c.laws.map(l=>l.name+" "+l.article).join(" "))) s += W.laws;
+    if(hit(c.opinion)) s += W.opinion;
+    if(hit(c.ground)) s += W.ground;
+    if(hit(c.id)) s += 20;
+  }
+  return s;
+}
+function textOf(c){
+  return [c.title,c.point,c.detail,c.minorName,c.org,c.tags.join(" "),
+          c.laws.map(l=>l.name+" "+l.article).join(" "),c.opinion,c.ground,c.id].join(" ").toLowerCase();
+}
+function filtered(){
+  const terms = state.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const rterms = state.refine.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  let out = CASES.filter(c=>{
+    const f = state.f;
+    if(f.type.size && !f.type.has(c.type)) return false;
+    if(f.major.size && !f.major.has(c.major)) return false;
+    if(f.minor.size && !f.minor.has(c.minor)) return false;
+    if(terms.length && scoreOf(c,terms)===0) return false;
+    if(rterms.length){ const t = textOf(c); if(!rterms.every(r=>t.includes(r))) return false; }
+    return true;
+  });
+  if(state.sort==="rel" && terms.length){
+    out.sort((a,b)=> scoreOf(b,terms)-scoreOf(a,terms) || b.reg.localeCompare(a.reg));
+  }else{
+    out.sort((a,b)=> b.reg.localeCompare(a.reg) || a.id.localeCompare(b.id));
+  }
+  return out;
+}
+function hl(text){
+  let t = esc(text);
+  const terms = [...state.q.split(/\s+/), ...state.refine.split(/\s+/)].map(x=>x.trim()).filter(Boolean);
+  for(const term of terms){
+    const re = new RegExp("("+term.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi");
+    t = t.replace(re,"<mark>$1</mark>");
+  }
+  return t;
+}
+
+function buildFilters(){
+  const box = $("#filters");
+  const base = CASES;
+  const count = (k,v)=> base.filter(c=>c[k]===v).length;
+  const singleTypes = ["감사사례"];
+  const preventCount = count("type","사전컨설팅") + count("type","적극행정");
+
+  const accHead = (key,label)=>`
+      <button type="button" class="btn-accordion" aria-expanded="false" aria-controls="acc-${key}" data-acc="${key}">
+        <span>${label}</span>
+        <span class="acc-n" data-badge="${key}"></span>
+        <svg class="acc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>`;
+
+  /* ── 자료 종류 : 펼침 없이 항상 표시, 항목명은 굵게 · 사전컨설팅/적극행정은 하나로 묶어 표시 ── */
+  let html = `<fieldset class="fgroup"><legend class="fgroup__t">자료 종류</legend>
+    ${singleTypes.filter(t=>count("type",t)).map(t=>
+      `<label class="opt opt--strong"><input type="checkbox" data-g="type" value="${t}"><span>${t}</span></label>`).join("")}
+    ${preventCount?`<label class="opt opt--strong"><input type="checkbox" data-g="type" data-merge="사전컨설팅,적극행정" value="사전컨설팅·적극행정"><span>사전컨설팅·적극행정</span></label>`:""}
+  </fieldset>`;
+
+  /* ── 업무 분야 ── */
+  html += `<fieldset class="fgroup fgroup--acc"><legend class="fgroup__t">업무 분야</legend>`;
+  Object.keys(CATS).sort().forEach(mj=>{
+    const n = count("major",mj); if(!n) return;
+    const minors = [...new Set(base.filter(c=>c.major===mj).map(c=>c.minor))];
+    html += `<div class="acc-item">
+      ${accHead(mj, CATS[mj].name)}
+      <div class="acc-panel" id="acc-${mj}" hidden>
+        <label class="opt"><input type="checkbox" data-g="major" value="${mj}"><span>${CATS[mj].name} 전체</span></label>
+        ${minors.map(mn=>`<label class="opt opt--sub"><input type="checkbox" data-g="minor" value="${mn}"><span>${CATS[mj].minors[mn]||mn}</span></label>`).join("")}
+      </div>
+    </div>`;
+  });
+  html += `</fieldset>`;
+
+  box.innerHTML = html;
+
+  box.querySelectorAll("input").forEach(el=>{
+    el.addEventListener("change",()=>{
+      const g = el.dataset.g;
+      if(el.dataset.merge){
+        el.dataset.merge.split(",").forEach(v=> el.checked ? state.f[g].add(v) : state.f[g].delete(v));
+      }else{
+        el.checked ? state.f[g].add(el.value) : state.f[g].delete(el.value);
+      }
+      state.page = 1;
+      render();
+      el.focus();
+    });
+  });
+
+  /* 아코디언 : 클릭하면 하위 항목이 펼쳐짐 */
+  box.querySelectorAll(".btn-accordion").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const open = btn.getAttribute("aria-expanded")==="true";
+      btn.setAttribute("aria-expanded", open ? "false" : "true");
+      const panel = document.getElementById(btn.getAttribute("aria-controls"));
+      if(panel) panel.hidden = open;
+    });
+  });
+}
+
+/* 선택된 조건을 아코디언 머리에 표시하고, 선택된 그룹은 자동으로 펼침 */
+function syncAccordion(){
+  const openIf = (btn, picked)=>{
+    const badge = btn.querySelector("[data-badge]");
+    if(!badge) return;
+    if(picked){
+      badge.className = "acc-on";
+      badge.textContent = picked+"개 선택";
+      if(btn.getAttribute("aria-expanded")!=="true"){
+        btn.setAttribute("aria-expanded","true");
+        const pn = document.getElementById(btn.getAttribute("aria-controls"));
+        if(pn) pn.hidden = false;
+      }
+    }else{
+      badge.className = "acc-n";
+      badge.textContent = "";
+    }
+  };
+
+  Object.keys(CATS).forEach(mj=>{
+    const btn = document.querySelector(`.btn-accordion[data-acc="${mj}"]`);
+    if(!btn) return;
+    const minors = new Set(CASES.filter(c=>c.major===mj).map(c=>c.minor));
+    let picked = state.f.major.has(mj) ? 1 : 0;
+    state.f.minor.forEach(v=>{ if(minors.has(v)) picked++; });
+    openIf(btn, picked);
+  });
+
+}
+
+function renderChips(){
+  const c = $("#chips");
+  const items = [];
+  Object.entries(state.f).forEach(([g,set])=>{
+    if(g==="type"){
+      const merged = set.has("사전컨설팅") || set.has("적극행정");
+      set.forEach(v=>{ if(v!=="사전컨설팅" && v!=="적극행정") items.push([g,v]); });
+      if(merged) items.push([g,"사전컨설팅·적극행정"]);
+    }else{
+      set.forEach(v=> items.push([g,v]));
+    }
+  });
+  if(state.refine.trim()) items.push(["refine","결과 내 : "+state.refine.trim()]);
+
+  const fc = $("#filterCount");
+  if(fc) fc.textContent = items.length ? items.length+"개 적용" : "전체";
+  const ra = $("#railApplied");
+  if(ra){ ra.hidden = items.length===0; ra.textContent = "선택된 조건 ("+items.length+")"; }
+
+  const chipLabel = (g,v)=>{
+    if(g==="major") return (CATS[v] && CATS[v].name) || v;
+    if(g==="minor"){
+      const mj = v.slice(0,2);
+      return (CATS[mj] && CATS[mj].minors && CATS[mj].minors[v]) || v;
+    }
+    return v;
+  };
+  c.innerHTML = items.length
+    ? `<span class="chips__lb">선택된 조건 (${items.length})</span>` + items.map(([g,v])=>
+      `<span class="chip">${esc(chipLabel(g,v))}<button type="button" data-g="${g}" data-v="${esc(v)}" aria-label="${esc(chipLabel(g,v))} 조건 해제">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button></span>`).join("")
+    : "";
+  c.querySelectorAll("button").forEach(b=>{
+    b.addEventListener("click",()=>{
+      if(b.dataset.g==="refine"){ state.refine=""; $("#refine").value=""; }
+      else if(b.dataset.g==="type" && b.dataset.v==="사전컨설팅·적극행정"){
+        state.f.type.delete("사전컨설팅"); state.f.type.delete("적극행정");
+        document.querySelectorAll('#filters input[data-g="type"][data-merge]').forEach(i=> i.checked=false);
+      }
+      else{
+        state.f[b.dataset.g].delete(b.dataset.v);
+        document.querySelectorAll(`#filters input[data-g="${b.dataset.g}"]`).forEach(i=>{ if(i.value===b.dataset.v) i.checked=false; });
+      }
+      state.page=1;
+      render();
+    });
+  });
+}
+
+function resultChip(c){
+  if(!c.resultLabel) return "";
+  const prevent = PREVENT.has(c.type);
+  return `<span class="result ${prevent?"result--prevent":"result--none"}">${esc(c.resultLabel)}</span>`;
+}
+
+function rowHtml(c){
+  return `
+  <button class="row" data-id="${c.id}" type="button">
+    <span class="row__cat">
+      <span class="kind ${PREVENT.has(c.type)?"kind--prevent":""}">${c.type}</span>
+      <span class="crumb"><b>${esc(CATS[c.major].name)}</b> › ${esc(c.minorName)}</span>
+    </span>
+    <span class="row__t">${hl(c.title)}</span>
+    <span class="row__p">${hl(c.point)}</span>
+    <span class="row__meta">
+      ${resultChip(c)}
+      <span>${esc(c.org||c.source||"")}</span>
+      <span class="meta-div" aria-hidden="true">|</span>
+      <span class="row__id">사례번호 ${esc(c.id)}</span>
+      ${c.link==="확인필요"?`<span class="flag">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+          <path d="M12 3l9 16H3z" stroke-linejoin="round"/><path d="M12 10v4M12 17h.01" stroke-linecap="round"/>
+        </svg>원문 확인 필요</span>`:""}
+    </span>
+  </button>`;
+}
+
+function render(){
+  const rows = filtered();
+  $("#cnt").textContent = rows.length;
+  $("#total").textContent = CASES.length;
+  $("#cntnote").textContent = (state.q||state.refine) ? " 검색됨" : " 전체";
+  renderChips();
+  syncAccordion();
+
+  const list = $("#list");
+  const pager = $("#pager");
+
+  if(!rows.length){
+    pager.innerHTML = "";
+    const kw = state.q.trim() || state.refine.trim();
+    list.innerHTML = `
+      <div class="empty">
+        <h3>검색어와 일치하는 결과를 찾을 수 없습니다</h3>
+        <p>${kw?`검색어 \u201C${esc(kw)}\u201D에 대한 결과가 없습니다.`:"현재 조건에 해당하는 사례가 없습니다."}</p>
+        <ul>
+          <li>철자나 맞춤법 오류가 있는지 확인해 주세요.</li>
+          <li>여러 단어로 나누거나 다른 검색어로 검색해 주세요.</li>
+          <li>보다 일반적인 단어로 검색해 보세요. 예) 여비 \u2194 출장비, 수의계약 \u2194 1인견적</li>
+          <li>선택한 검색 조건을 해제하면 결과 범위가 넓어집니다.</li>
+        </ul>
+        <div class="empty__act"><button class="btn" type="button" onclick="clearAll()">검색 조건 전체 해제</button></div>
+      </div>`;
+    return;
+  }
+
+  /* KRDS 목록 탐색 : 긴 목록은 페이지 단위로 분할, 기본 10개 이상 표시 */
+  const per = state.perPage;
+  const totalPages = Math.max(1, Math.ceil(rows.length / per));
+  if(state.page > totalPages) state.page = totalPages;
+  if(state.page < 1) state.page = 1;
+  const start = (state.page - 1) * per;
+  const pageRows = rows.slice(start, start + per);
+
+  list.innerHTML = pageRows.map(rowHtml).join("");
+  list.querySelectorAll(".row").forEach(el=> el.addEventListener("click",()=> openModal(el.dataset.id, el)));
+  renderPager(totalPages);
+}
+
+/* KRDS .krds-pagination 구조 : prev(order1) / page-links(order2) / next(order3) */
+function renderPager(totalPages){
+  const pager = $("#pager");
+  if(totalPages <= 1){ pager.innerHTML = ""; return; }
+  const cur = state.page;
+
+  /* 표시할 페이지 번호 : 현재 기준 앞뒤 2개 + 처음/끝 + 생략부호 */
+  const nums = [];
+  const push = n => { if(!nums.includes(n)) nums.push(n); };
+  push(1);
+  for(let i=cur-2;i<=cur+2;i++) if(i>1 && i<totalPages) push(i);
+  push(totalPages);
+  nums.sort((a,b)=>a-b);
+
+  let links = "";
+  let prev = 0;
+  nums.forEach(n=>{
+    if(prev && n - prev > 1) links += `<span class="page-link link-dot" aria-hidden="true">…</span>`;
+    links += `<button type="button" class="page-link${n===cur?" active":""}" data-page="${n}"
+      ${n===cur?'aria-current="page"':""} aria-label="${n}페이지${n===cur?" (현재 페이지)":""}">${n}</button>`;
+    prev = n;
+  });
+
+  pager.innerHTML =
+    `<button type="button" class="page-navi prev${cur===1?" disabled":""}" data-page="${cur-1}" ${cur===1?"disabled":""} aria-label="이전 페이지">
+       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>이전
+     </button>
+     <span class="page-links">${links}</span>
+     <button type="button" class="page-navi next${cur===totalPages?" disabled":""}" data-page="${cur+1}" ${cur===totalPages?"disabled":""} aria-label="다음 페이지">
+       다음<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+     </button>`;
+
+  pager.querySelectorAll("[data-page]").forEach(b=>{
+    if(b.classList.contains("disabled")) return;
+    b.addEventListener("click",()=>{
+      state.page = parseInt(b.dataset.page,10);
+      render();
+      /* 페이지 이동 후 결과 목록 시작 지점으로 초점·스크롤 이동 */
+      const first = $("#list .row");
+      if(first){
+        first.focus();
+        if(typeof first.scrollIntoView === "function") first.scrollIntoView({block:"start"});
+      }
+    });
+  });
+}
+
+let lastFocus = null;
+function openModal(id, opener){
+  const c = CASES.find(x=>x.id===id);
+  if(!c) return;
+  lastFocus = opener || document.activeElement;
+  const checks = CHECKLISTS[c.checklist]||[];
+  const infoIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01" stroke-linecap="round"/></svg>`;
+  const warnIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l9 16H3z" stroke-linejoin="round"/><path d="M12 10v4M12 17h.01" stroke-linecap="round"/></svg>`;
+
+  let extra = "";
+  if(c.type==="사전컨설팅"){
+    extra = `
+    <section class="sec"><h4 class="sec__t">컨설팅 의견</h4><p>${esc(c.opinion)}</p>
+      ${c.requestOrg?`<p style="margin-top:0.8rem;font-size:var(--krds-pc-font-size-label-xsmall);color:var(--krds-light-color-text-subtle)">요청기관 ${esc(c.requestOrg)}</p>`:""}
+    </section>
+    <div class="sec"><div class="note">${infoIcon}<span><b>개별 사안 전제</b> · 이 의견은 해당 신청 사안의 전제와 사실관계에 한정된 판단입니다. 비슷해 보여도 사실관계가 다르면 결론이 달라질 수 있으므로, 개별 사안은 반드시 별도로 확인하시기 바랍니다.</span></div></div>`;
+  }
+  if(c.type==="적극행정"){
+    extra = `
+    <section class="sec"><h4 class="sec__t">면책 판단 근거</h4><p>${esc(c.ground)}</p></section>
+    <div class="sec"><div class="note note--warn">${warnIcon}<span><b>참고용 안내</b> · 면책 요건 충족 여부는 개별 사안의 사실관계에 따라 달라집니다. 이 사례는 참고용이며 면책을 보장하지 않습니다.</span></div></div>`;
+  }
+
+  $("#modal").innerHTML = `
+    <div class="modal__head">
+      <div class="modal__kicker">
+        <span class="kind ${PREVENT.has(c.type)?"kind--prevent":""}">${c.type}${c.caseType?" · "+esc(c.caseType):""}</span>
+        <button type="button" class="crumb crumb--link" id="mcrumb" data-major="${esc(c.major)}" data-minor="${esc(c.minor)}" aria-label="${esc(CATS[c.major].name)} · ${esc(c.minorName)} 분야로 검색결과 필터링">
+          <b>${esc(CATS[c.major].name)}</b> › ${esc(c.minorName)}
+        </button>
+      </div>
+      <h3 class="modal__t" id="modalTitle">${esc(c.title)}</h3>
+      <dl class="ledger">
+        ${c.resultLabel?`<div><dt>결과</dt><dd><span class="result ${PREVENT.has(c.type)?"result--prevent":"result--none"}">${esc(c.resultLabel)}</span></dd></div>`:""}
+        <div><dt>기관</dt><dd>${esc(c.org||"-")}</dd></div>
+        <div><dt>사례번호</dt><dd>${esc(c.id)}</dd></div>
+      </dl>
+    </div>
+    <div class="modal__body">
+      <section class="sec"><h4 class="sec__t">지적 · 판단 요지</h4><p>${esc(c.point)}</p></section>
+      <section class="sec"><h4 class="sec__t">상세요약</h4><p>${esc(c.detail)}</p></section>
+      ${extra}
+      ${checks.length?`<section class="sec">
+        <h4 class="sec__t" style="border:0;padding:0;margin-bottom:var(--krds-gap-3)">자가점검 체크리스트</h4>
+        <button type="button" class="check-toggle" id="checkToggle" aria-expanded="false" aria-controls="checkList">
+          <span>${esc(c.minorName)} 공통 점검 항목</span>
+          <span class="check-toggle__n">${checks.length}개</span>
+          <svg class="check-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <ul class="checklist" id="checkList" hidden>${checks.map(x=>`<li><label><input type="checkbox"><span>${esc(x)}</span></label></li>`).join("")}</ul>
+        ${c.extra?`<div class="note" style="margin-top:1.2rem">${infoIcon}<span><b>이 사례의 추가 주의</b> · ${esc(c.extra)}</span></div>`:""}
+      </section>`: c.extra?`<div class="sec"><div class="note">${infoIcon}<span><b>이 사례의 추가 주의</b> · ${esc(c.extra)}</span></div></div>`:""}
+      ${c.laws.length?`<section class="sec"><h4 class="sec__t">관련 법령</h4>
+        <ul class="laws">${c.laws.map((l,li)=>`<li>
+          <span class="law__n">${esc(l.name)}</span><span class="law__a">${esc(l.article)}</span>
+          <span class="law__actions">
+            ${LAW_PROXY
+              ? `<button type="button" class="law__view" aria-expanded="false" data-law="${esc(l.name)}" data-article="${esc(l.article)}" data-target="lawbody-${li}">조문 내용 보기
+                  <svg class="law__view-ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </button>`
+              : (l.url?`<a class="law__go" href="${esc(l.url)}" target="_blank" rel="noopener">국가법령정보센터 가기<span class="sr-only">(새 창)</span>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5h10v10M19 5L7 17"/></svg></a>`:"")}
+          </span>
+          ${LAW_PROXY?`<div class="law__body" id="lawbody-${li}" hidden></div>`:""}
+        </li>`).join("")}</ul></section>`:""}
+      ${c.tags.length?`<section class="sec"><h4 class="sec__t">태그</h4>
+        <div class="tags">${c.tags.map(t=>`<span class="tag">#${esc(t)}</span>`).join("")}</div></section>`:""}
+    </div>
+    <div class="modal__foot">
+      <dl class="revlog" style="margin:0;padding:0;border:0;flex:1 1 auto">
+        <div><dt>출처</dt><dd>${esc(c.source||"-")}</dd></div>
+        ${c.pub?`<div><dt>원문 공개일</dt><dd>${esc(c.pub)}</dd></div>`:""}
+        <div><dt>등록일</dt><dd>${esc(c.reg||"-")}</dd></div>
+      </dl>
+      <span class="sp">
+        ${c.url && c.link==="정상"
+          ? `<a class="btn btn--primary" href="${esc(c.url)}" target="_blank" rel="noopener">원문 보기<span class="sr-only">(새 창)</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5h10v10M19 5L7 17"/></svg></a>`
+          : `<span class="btn btn--disabled">${c.link==="확인필요"?"원문 확인 필요":"원문 미제공"}</span>`}
+      </span>
+    </div>
+    <button class="modal__close" id="mclose" type="button" aria-label="상세 닫기">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>`;
+
+  $("#scrim").classList.add("on");
+  document.body.style.overflow="hidden";
+  $("#mclose").addEventListener("click", closeModal);
+  const mc = $("#mcrumb");
+  if(mc) mc.addEventListener("click",()=>{
+    closeModal();
+    filterByMinor(mc.dataset.major, mc.dataset.minor);
+  });
+  if(LAW_PROXY){
+    $("#modal").querySelectorAll(".law__view").forEach(btn=>{
+      btn.addEventListener("click", ()=> loadLawArticle(btn));
+    });
+  }
+  $("#modal").focus();
+  const ct = $("#checkToggle");
+  if(ct) ct.addEventListener("click",()=>{
+    const open = ct.getAttribute("aria-expanded")==="true";
+    ct.setAttribute("aria-expanded", open ? "false" : "true");
+    const panel = $("#checkList");
+    if(panel) panel.hidden = open;
+  });
+}
+function closeModal(){
+  $("#scrim").classList.remove("on");
+  document.body.style.overflow="";
+  if(lastFocus && document.body.contains(lastFocus)) lastFocus.focus();
+  else $("#q").focus();
+}
+function trapFocus(e){
+  if(e.key!=="Tab") return;
+  const m=$("#modal");
+  const f=[...m.querySelectorAll('a[href],button:not([disabled]),input,select,textarea')];
+  if(!f.length) return;
+  const first=f[0], last=f[f.length-1];
+  if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+}
+$("#scrim").addEventListener("click", e=>{ if(e.target.id==="scrim") closeModal(); });
+document.addEventListener("keydown", e=>{
+  if(!$("#scrim").classList.contains("on")) return;
+  if(e.key==="Escape") closeModal();
+  else trapFocus(e);
+});
+
+function pushRecent(v){
+  v=v.trim(); if(!v) return;
+  state.recent=[v,...state.recent.filter(x=>x!==v)].slice(0,5);
+  drawRecent();
+}
+function drawRecent(){
+  const box=$("#recent");
+  if(!state.recent.length){ box.hidden=true; return; }
+  box.hidden=false;
+  box.innerHTML = `<span class="recent__lb">최근 검색어</span>`+
+    state.recent.map(v=>`<button type="button" data-v="${esc(v)}">${esc(v)}</button>`).join("")+
+    `<button class="recent__del" type="button" id="rdel">전체 삭제</button>`;
+  box.querySelectorAll("button[data-v]").forEach(b=>{
+    b.addEventListener("click",()=>{ state.q=b.dataset.v; $("#q").value=b.dataset.v; $("#qclear").hidden=false; render(); });
+  });
+  $("#rdel").addEventListener("click",()=>{ state.recent=[]; drawRecent(); });
+}
+
+let t1,t2;
+$("#q").addEventListener("input", e=>{
+  state.q=e.target.value; $("#qclear").hidden=!state.q; state.page=1;
+  clearTimeout(t1); t1=setTimeout(render,160);
+});
+$("#q").addEventListener("change", e=> pushRecent(e.target.value));
+$("#q").addEventListener("keydown", e=>{ if(e.key==="Enter") pushRecent(e.target.value); });
+$("#qclear").addEventListener("click",()=>{ state.q=""; $("#q").value=""; $("#qclear").hidden=true; $("#q").focus(); render(); });
+$("#refine").addEventListener("input", e=>{ state.refine=e.target.value; state.page=1; clearTimeout(t2); t2=setTimeout(render,160); });
+$("#sort").addEventListener("change", e=>{ state.sort=e.target.value; state.page=1; render(); });
+$("#perpage").addEventListener("change", e=>{ state.perPage=parseInt(e.target.value,10); state.page=1; render(); });
+$("#reset").addEventListener("click", clearAll);
+function clearAll(){
+  Object.values(state.f).forEach(s=>s.clear());
+  state.refine=""; $("#refine").value="";
+  state.page=1;
+  document.querySelectorAll("#filters input").forEach(i=>i.checked=false);
+  document.querySelectorAll(".btn-accordion").forEach(b=>{
+    b.setAttribute("aria-expanded","false");
+    const pn = document.getElementById(b.getAttribute("aria-controls"));
+    if(pn) pn.hidden = true;
+  });
+  render();
+}
+
+/* 상세 화면의 분야 breadcrumb 클릭 → 해당 세부분야로 필터를 걸고 목록으로 이동 */
+function filterByMinor(major, minor){
+  Object.values(state.f).forEach(s=>s.clear());
+  state.q=""; $("#q").value="";
+  state.refine=""; $("#refine").value="";
+  state.f.minor.add(minor);
+  state.page=1;
+  document.querySelectorAll("#filters input").forEach(i=>i.checked=false);
+  const minorInput = document.querySelector(`#filters input[data-g="minor"][value="${minor}"]`);
+  if(minorInput) minorInput.checked = true;
+  document.querySelectorAll(".btn-accordion").forEach(b=>{
+    const isTarget = b.dataset.acc === major;
+    b.setAttribute("aria-expanded", isTarget ? "true" : "false");
+    const pn = document.getElementById(b.getAttribute("aria-controls"));
+    if(pn) pn.hidden = !isTarget;
+  });
+  render();
+  const list = $("#list");
+  if(list && typeof list.scrollIntoView === "function") list.scrollIntoView({block:"start"});
+}
+
+/* "조문 내용 보기" 버튼 → 프록시(LAW_PROXY)를 통해 국가법령정보센터 Open API에서
+   해당 조문의 현재 원문을 실시간으로 불러와 펼쳐 보여준다. */
+async function loadLawArticle(btn){
+  const body = document.getElementById(btn.dataset.target);
+  if(!body) return;
+  const isOpen = btn.getAttribute("aria-expanded")==="true";
+  if(isOpen){
+    btn.setAttribute("aria-expanded","false");
+    body.hidden = true;
+    return;
+  }
+  btn.setAttribute("aria-expanded","true");
+  body.hidden = false;
+  if(body.dataset.loaded==="1") return;
+  body.innerHTML = `<p class="law__loading">조문 내용을 불러오는 중입니다…</p>`;
+  try{
+    const u = new URL(LAW_PROXY.replace(/\/+$/,"") + "/article");
+    u.searchParams.set("law", btn.dataset.law);
+    u.searchParams.set("article", btn.dataset.article);
+    const res = await fetch(u.toString());
+    const data = await res.json();
+    if(!data || !data.ok){
+      body.innerHTML = `<p class="law__error">조문 내용을 불러오지 못했습니다. (${esc((data&&data.error)||"알 수 없는 오류")})</p>`;
+      return;
+    }
+    body.innerHTML = `
+      <p class="law__body-title">${esc(data.articleTitle||btn.dataset.article)}</p>
+      <p class="law__body-text">${esc(data.articleText||"")}</p>
+      <p class="law__body-meta">국가법령정보센터 Open API로 실시간 조회한 현행 조문입니다${data.fetchedAt?" · "+esc(data.fetchedAt):""}. 최종 확인은 원문에서 해주세요.</p>`;
+    body.dataset.loaded = "1";
+  }catch(e){
+    body.innerHTML = `<p class="law__error">네트워크 오류로 조문 내용을 불러오지 못했습니다.</p>`;
+  }
+}
+
+const mq = (typeof window.matchMedia === "function")
+  ? window.matchMedia("(max-width:900px)")
+  : { matches:false, addEventListener:function(){}, addListener:function(){} };
+function isNarrow(){ return mq.matches || (window.innerWidth && window.innerWidth <= 900); }
+function syncRail(){
+  const rail=$("#rail"), tg=$("#filterToggle");
+  if(!rail || !tg) return;
+  rail.hidden = isNarrow() ? tg.getAttribute("aria-expanded") !== "true" : false;
+}
+$("#filterToggle").addEventListener("click",()=>{
+  const tg=$("#filterToggle");
+  tg.setAttribute("aria-expanded", tg.getAttribute("aria-expanded")==="true" ? "false" : "true");
+  syncRail();
+});
+if(typeof mq.addEventListener === "function") mq.addEventListener("change", syncRail);
+else if(typeof mq.addListener === "function") mq.addListener(syncRail);
+window.addEventListener("resize", syncRail);
+
+window.addEventListener("scroll",()=> $("#totop").classList.toggle("on", window.scrollY>500));
+$("#totop").addEventListener("click",()=>{ window.scrollTo({top:0}); $("#q").focus(); });
+
+/* ══ 글자·화면 표시 설정 (KRDS 화면 크기 조정 / 선명한 화면 모드) ══ */
+const a11yToggle = $("#a11yToggle"), a11yPanel = $("#a11yPanel");
+a11yToggle.addEventListener("click",()=>{
+  const open = a11yToggle.getAttribute("aria-expanded")==="true";
+  a11yToggle.setAttribute("aria-expanded", open ? "false" : "true");
+  a11yPanel.hidden = open;
+  if(!open){ const f = a11yPanel.querySelector("button"); if(f) f.focus(); }
+});
+function setZoom(v){
+  document.documentElement.setAttribute("data-krds-zoom", v);
+  a11yPanel.querySelectorAll("[data-zoom]").forEach(b=>
+    b.setAttribute("aria-pressed", b.dataset.zoom===v ? "true" : "false"));
+}
+function setMode(v){
+  if(v==="high-contrast") document.documentElement.setAttribute("data-krds-mode","high-contrast");
+  else document.documentElement.removeAttribute("data-krds-mode");
+  a11yPanel.querySelectorAll("[data-mode]").forEach(b=>
+    b.setAttribute("aria-pressed", b.dataset.mode===v ? "true" : "false"));
+}
+a11yPanel.querySelectorAll("[data-zoom]").forEach(b=> b.addEventListener("click",()=> setZoom(b.dataset.zoom)));
+a11yPanel.querySelectorAll("[data-mode]").forEach(b=> b.addEventListener("click",()=> setMode(b.dataset.mode)));
+$("#a11yReset").addEventListener("click",()=>{ setZoom("medium"); setMode("light"); });
+setZoom("medium");
+
+buildFilters();
+render();
+syncRail();
+</script>
+</body>
+</html>
