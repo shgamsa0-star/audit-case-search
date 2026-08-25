@@ -1256,14 +1256,6 @@ mark{
 .law__body-meta{margin-top:var(--krds-gap-3);font-size:var(--krds-pc-font-size-label-xsmall);color:var(--krds-light-color-text-subtle)}
 .law__loading{color:var(--krds-light-color-text-subtle)}
 .law__error{color:var(--krds-light-color-text-warning)}
-.tags{display:flex;gap:var(--krds-gap-3);flex-wrap:wrap}
-.tag{
-  font-size:var(--krds-pc-font-size-label-xsmall);color:var(--krds-light-color-text-subtle);
-  min-height:2.8rem;display:inline-flex;align-items:center;
-  background:var(--krds-light-color-surface-gray-subtler);
-  border:1px solid var(--krds-light-color-border-gray-light);
-  border-radius:var(--krds-radius-xsmall1);padding:0 var(--krds-gap-3);
-}
 .modal__foot{
   padding:var(--krds-gap-5) var(--krds-gap-7);
   border-top:1px solid var(--krds-light-color-divider-gray-light);
@@ -20688,8 +20680,6 @@ function openModal(id, opener){
           </span>
           ${LAW_PROXY?`<div class="law__body" id="lawbody-${li}" hidden></div>`:""}
         </li>`).join("")}</ul></section>`:""}
-      ${c.tags.length?`<section class="sec"><h4 class="sec__t">태그</h4>
-        <div class="tags">${c.tags.map(t=>`<span class="tag">#${esc(t)}</span>`).join("")}</div></section>`:""}
     </div>
     <div class="modal__foot">
       <dl class="revlog" style="margin:0;padding:0;border:0;flex:1 1 auto">
