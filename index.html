@@ -456,6 +456,7 @@ body{padding-bottom:5.2rem}
   border-bottom:0.3rem solid var(--sh-navy);
   padding:var(--krds-gap-10) 0 var(--krds-gap-9);
 }
+
 /* KRDS heading-xlarge : PC 40px / 모바일 28px, 두께 700, 줄간격 150%, 자간 1px */
 .searchsec__title{
   font-size:var(--krds-pc-font-size-heading-xlarge);
@@ -464,6 +465,8 @@ body{padding-bottom:5.2rem}
   line-height:var(--krds-line-height-base);
   letter-spacing:var(--krds-typo-letter-spacing-1);
   margin-bottom:var(--krds-gap-4);
+  padding-left:var(--krds-gap-6);
+  border-left:0.6rem solid var(--sh-navy);
 }
 .searchsec__desc{
   font-size:var(--krds-pc-font-size-body-medium);color:var(--krds-light-color-text-subtle);
@@ -479,6 +482,7 @@ body{padding-bottom:5.2rem}
   display:flex;align-items:stretch;background:var(--krds-light-color-surface-white);
   border:0.2rem solid var(--sh-navy);
   border-radius:var(--krds-radius-medium3);
+  box-shadow:0 0.8rem 2.4rem rgba(0,40,100,.10);
 }
 /* 초점 시 테두리 한 겹만 두껍게 (이중 링 방지) */
 .searchbox__field:focus-within{
@@ -1371,6 +1375,9 @@ mark{
   .modal{max-width:none;min-height:100vh;max-height:none;border-radius:0}
   .modal__head,.modal__body,.modal__foot{padding-left:var(--krds-gap-5);padding-right:var(--krds-gap-5)}
   .modal__foot{border-radius:0}
+}
+@media (max-width:560px){
+  .searchsec__title{padding-left:var(--krds-gap-4);border-left-width:0.4rem}
 }
 @media (max-width:560px){
   .gnb-notice__links{margin-left:0;width:100%}
